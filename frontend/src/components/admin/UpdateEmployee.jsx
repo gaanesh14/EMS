@@ -21,7 +21,7 @@ function UpdateEmployee() {
     const token = sessionStorage.getItem("token");
 
     axios
-      .get(`http://localhost:5000/api/employee/single/${id}`, {
+      .get(`${import.meta.env.VITE_API_URL}employee/single/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -61,7 +61,7 @@ function UpdateEmployee() {
       const token = sessionStorage.getItem("token");
 
       const updatedData = await axios.put(
-        `http://localhost:5000/api/employee/edit/${id}`, // employee id from params
+        `${import.meta.env.VITE_API_URL}employee/edit/${id}`, // employee id from params
         {
           email: mail,
           dob,

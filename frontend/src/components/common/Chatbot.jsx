@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Send, Cpu, User } from 'lucide-react'; // Assuming you use a library like lucide-react for icons
+import { Send, Cpu, User } from 'lucide-react'; 
 
 const Chatbot = () => {
-    // State setup remains the same
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +28,7 @@ const Chatbot = () => {
         try {
             const token = sessionStorage.getItem("token");
             // Adjust the URL to your Express backend endpoint
-            const response = await axios.post('http://localhost:5000/api/employee/chat', { 
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}employee/chat`, { 
                   message: userMessage,
                 }, {headers: { Authorization: `Bearer ${token}` }
             });
@@ -50,7 +49,6 @@ const Chatbot = () => {
     };
 
     return (
-        // Main container matching the admin dashboard background (white/off-white)
         <div className="h-[calc(100vh-90px)] bg-gray-50 p-4 overflow-hidden"> 
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl flex flex-col h-full">
                 

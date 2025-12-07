@@ -13,7 +13,7 @@ function AddDepartment() {
     try {
       const token = sessionStorage.getItem("token");
       const createdData = await axios.post(
-        "http://localhost:5000/api/department/add",
+        `${import.meta.env.VITE_API_URL}department/add`,
         {
           name,
           desc,

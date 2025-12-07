@@ -23,7 +23,7 @@ export default function EmployeeProfile() {
     const token = sessionStorage.getItem("token");
 
     axios
-      .get(`http://localhost:5000/api/employee/single/${id}`, {
+      .get(`${import.meta.env.VITE_API_URL}employee/single/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -52,7 +52,7 @@ export default function EmployeeProfile() {
     formData.append("image", file);
 
     const res = await fetch(
-      `http://localhost:5000/api/employee/${employee._id}/image`,
+      `${import.meta.env.VITE_API_URL}employee/${employee._id}/image`,
       {
         method: "PUT",
         body: formData,
@@ -73,7 +73,7 @@ export default function EmployeeProfile() {
     setNewImage(null);
 
     await fetch(
-      `http://localhost:5000/api/employee/${employee._id}/image/remove`,
+      `${import.meta.env.VITE_API_URL}employee/${employee._id}/image/remove`,
       { method: "PUT" }
     );
     toast.success("Image removed successfully");

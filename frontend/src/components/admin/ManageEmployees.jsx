@@ -16,7 +16,7 @@ export default function ManageEmployees() {
     const token = sessionStorage.getItem("token");
 
     axios
-      .get(`http://localhost:5000/api/employee?page=${page}`, {
+      .get(`${import.meta.env.VITE_API_URL}employee?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,7 +45,7 @@ export default function ManageEmployees() {
   const handleDelete = async (id) => {
     try {
       const token = sessionStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/employee/delete/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}employee/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("deleted successfully:");

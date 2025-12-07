@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import register from "../assets/bgregister.jpg";
+
 function Register() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
@@ -19,7 +20,7 @@ function Register() {
     if (!password) return toast.error("Password is required");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}auth/register`, {
         userName,
         email,
         password,

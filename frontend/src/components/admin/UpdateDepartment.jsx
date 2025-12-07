@@ -14,7 +14,7 @@ function UpdateDepartment() {
     const token = sessionStorage.getItem("token");
     // const id = window.location.pathname.split("/").pop(); // get id from URL
     axios
-      .get(`http://localhost:5000/api/department/single/${id}`, {
+      .get(`${import.meta.env.VITE_API_URL}department/single/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -31,7 +31,7 @@ function UpdateDepartment() {
     try {
       const token = sessionStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/department/edit/${id}`,
+        `${import.meta.env.VITE_API_URL}department/edit/${id}`,
         {
           name,
           desc,
