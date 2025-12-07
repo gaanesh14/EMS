@@ -15,7 +15,7 @@ export default function ManageDepartments() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     axios
-      .get(`http://localhost:5000/api/department/all?page=${page}`, {
+      .get(`${import.meta.env.VITE_API_URL}department/all?page=${page}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -38,7 +38,7 @@ export default function ManageDepartments() {
   const handleDelete = async (id) => {
     try {
       const token = sessionStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/department/delete/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}department/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Department deleted successfully:");

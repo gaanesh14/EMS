@@ -15,7 +15,7 @@ export default function DashboardCards() {
       try {
         const token = sessionStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:5000/api/department/count",
+          `${import.meta.env.VITE_API_URL}department/count`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -57,13 +57,6 @@ export default function DashboardCards() {
         </h3>
         <p className="text-2xl font-bold"> {counts.departmentCount} </p>
       </div>
-
-      {/* Salary */}
-      {/* <div className="bg-white shadow-md p-6 rounded-lg border-l-8 border-red-500">
-        <div className="text-3xl">💰</div>
-        <h3 className="text-lg font-semibold mt-2">Monthly Pay</h3>
-        <p className="text-2xl font-bold"> 0 </p>
-      </div> */}
     </div>
   );
 }
