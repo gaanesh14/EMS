@@ -5,6 +5,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useAuth } from "../components/common/AuthContext";
 import login from "../assets/bglogin.jpeg";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "./Firebase";
 
 function Login() {
   const navigate = useNavigate();
@@ -15,27 +17,53 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //validation
     if (!email) return toast.error("Email is required");
     if (!password) return toast.error("Password is required");
 
     try {
-      // const token = sessionStorage.getItem("token");
-      // const res = await axios.post(`${process.env.API_URL}/auth/login`, {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}auth/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}auth/login`,
+        { email, password }
+      );
+
       sessionStorage.setItem("token", res.data.token);
       sessionStorage.setItem("role", res.data.user.role);
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
       sessionStorage.setItem("id", res.data.user.id);
-      
+      sessionStorage.setItem("provider", res.data.user.authProvider);
+
       toast.success("Login successful!");
       syncUser();
       navigate("/dashboard");
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}auth/google`, // <— must include /auth/google
+        {
+          email: user.email,
+          userName: user.displayName,
+          image: user.photoURL,
+        }
+      );
+      sessionStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("role", res.data.user.role);
+      sessionStorage.setItem("user", JSON.stringify(res.data.user));
+      sessionStorage.setItem("id", res.data.user.id);
+      sessionStorage.setItem("provider", res.data.user.authProvider)
+      toast.success("Google Login Successful!");
+      syncUser();
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      toast.error("Google Login failed");
     }
   };
 
@@ -93,6 +121,23 @@ function Login() {
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition duration-200"
         >
           Log In
+        </button>
+        <div className="flex items-center gap-2 my-2">
+          <div className="flex-grow h-px bg-gray-300" />
+          <span className="text-gray-500 text-sm">or</span>
+          <div className="flex-grow h-px bg-gray-300" />
+        </div>
+
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full flex items-center justify-center gap-3 border py-2 rounded-lg hover:bg-gray-100 transition font-semibold text-gray-700"
+        >
+          <img
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+            className="w-5"
+          />
+          Continue with Google
         </button>
 
         <p className="text-center text-gray-600">

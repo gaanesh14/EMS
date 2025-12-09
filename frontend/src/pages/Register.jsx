@@ -25,7 +25,7 @@ function Register() {
         email,
         password,
       });
-      console.log("clicked");
+     // console.log("clicked");
       toast.success("Registration successful!");
       navigate("/login");
     } catch (error) {

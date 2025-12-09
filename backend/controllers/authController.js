@@ -25,7 +25,7 @@ export const registerUser = async (req, res) => {
     res.status(201).json({
       message: "User Registered Successfully",
       user: {
-        id: user._id,
+        id: user.id,
         userName: user.userName,
         email: user.email,
         role: user.role,
@@ -37,13 +37,18 @@ export const registerUser = async (req, res) => {
   }
 };
 
-
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await Employee.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid Email" });
+
+    if (user.authProvider === "google") {
+      return res
+        .status(400)
+        .json({ message: "Please login using Google OAuth" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
@@ -68,6 +73,7 @@ export const loginUser = async (req, res) => {
         department: user.department,
         designation: user.designation,
         empId: user.empId,
+        authProvider: user.authProvider,
       },
       // employee: employeeData,
     });
@@ -75,6 +81,49 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "internal Server error" });
     console.log("error", error);
   }
+};
+
+export const googleLogin = async (req, res) => {
+  const { email, userName, image } = req.body;
+  // console.log("google Login:",req.body);
+
+  let user = await Employee.findOne({ email });
+
+  if (!user) {
+    // first registered user becomes admin automatically
+    const existingAdmin = await Employee.findOne({ role: "admin" });
+    const role = existingAdmin ? "employee" : "admin";
+
+    user = await Employee.create({
+      email,
+      userName,
+      image,
+      authProvider: "google",
+      password: null,
+      role,
+    });
+  }
+
+  const token = JWT.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
+
+  res.json({
+    message: "Login Success",
+    token,
+    user: {
+      id: user._id,
+      userName: user.userName,
+      email: user.email,
+      role: user.role,
+      image: user.image,
+      authProvider: user.authProvider,
+    },
+  });
 };
 
 // Password Change
@@ -93,6 +142,14 @@ export const changePassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    if (employee.authProvider === "google") {
+      return res
+        .status(400)
+        .json({
+          message: "You are login with Google password change is not Allowed!",
+        });
+    }
+
     const isMatch = await bcrypt.compare(oldPassword, employee.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Old password is incorrect" });
@@ -108,5 +165,3 @@ export const changePassword = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
