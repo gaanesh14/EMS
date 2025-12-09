@@ -13,6 +13,11 @@ function ChangePassword() {
     return toast.error("Please fill all fields");
   }
 
+  const provider = sessionStorage.getItem("provider");
+  if(provider === "google"){
+    return toast.error("You logged in using google password change is not allowed!")
+  }
+
   const id = sessionStorage.getItem("id");
   const token = sessionStorage.getItem("token");
 
@@ -26,7 +31,7 @@ function ChangePassword() {
 
   try {
     const res = await axios.put(
-      `http://localhost:5000/api/auth/change-password/${id}`,
+      `${import.meta.env.VITE_API_URL}auth/change-password/${id}`,
       { oldPassword, newPassword },
       { headers: { Authorization: `Bearer ${token}` } }
     );
