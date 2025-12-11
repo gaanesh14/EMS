@@ -27,7 +27,6 @@ router.delete("/delete/:id", protect, isAdmin, deleteEmployee);
 router.put("/:id/image", upload.single("image"), uploadImage);
 router.put("/:id/image/remove", removeImage);
 
-
 // Chat with AI
 router.post("/chat", protect, chatWithAI);
 export default router;

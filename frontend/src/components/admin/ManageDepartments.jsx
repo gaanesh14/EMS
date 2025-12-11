@@ -38,9 +38,12 @@ export default function ManageDepartments() {
   const handleDelete = async (id) => {
     try {
       const token = sessionStorage.getItem("token");
-      await axios.delete(`${import.meta.env.VITE_API_URL}department/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}department/delete/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       console.log("Department deleted successfully:");
       toast.success("Department Deleted successfully");
       setDepartments((prev) => prev.filter((dep) => dep._id !== id));

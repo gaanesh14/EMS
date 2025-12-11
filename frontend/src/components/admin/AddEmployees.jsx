@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { MdClose } from "react-icons/md";
 
 function AddEmployees() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // ⭐ Required by backend
+  const [password, setPassword] = useState("");
   const [empId, setEmpId] = useState("");
-  const [dob, setDob] = useState("");
+  const [doj, setDoj] = useState("");
   const [gender, setGender] = useState("");
   const [maritalStatus, setMaritalStatus] = useState("");
   const [designation, setDesignation] = useState("");
@@ -24,8 +25,8 @@ function AddEmployees() {
       !userName ||
       !email ||
       !password ||
-      // !empId ||
-      !dob ||
+      !empId ||
+      !doj ||
       !gender ||
       !maritalStatus ||
       !designation ||
@@ -45,8 +46,8 @@ function AddEmployees() {
           userName,
           email,
           password,
-         // empId,
-          dob,
+          empId,
+          doj,
           gender,
           maritalStatus,
           designation,
@@ -65,13 +66,24 @@ function AddEmployees() {
       console.log("Error:", error);
     }
   };
+  const closeButton = () => {
+    navigate("/employees");
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-start py-10 overflow-y-hidden">
-      <div className="bg-white w-full max-w-4xl shadow-xl rounded-xl p-8">
-        <h2 className="text-2xl font-bold text-gray-700 mb-6 border-b pb-2">
-          Add New Employee
-        </h2>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-start py-6 overflow-y-hidden">
+      <div className="bg-white w-full max-w-4xl shadow-xl rounded-xl p-4">
+        <div className="flex justify-between mb-6 border-b pb-2">
+          <h2 className="text-2xl font-bold text-gray-700 ">
+            Add New Employee
+          </h2>
+          <button
+            onClick={closeButton}
+            className="h-6 w-6 text-2xl -mt-4 hover:bg-red-500 rounded-lg"
+          >
+            <MdClose />
+          </button>
+        </div>
 
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Full Name */}
@@ -126,15 +138,15 @@ function AddEmployees() {
             />
           </div>
 
-          {/* DOB */}
+          {/* DOJ */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
-              Date of Birth
+              Date of Joining
             </label>
             <input
               type="date"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
+              value={doj}
+              onChange={(e) => setDoj(e.target.value)}
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>

@@ -1,0 +1,146 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+function ManageSalary() {
+  const [salary, setSalary] = useState([]);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
+
+  const navigate = useNavigate();
+
+  // Fetch salary list
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_API_URL
+        }salary/all?page=${page}&limit=10&search=${search}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        setSalary(res.data.salaries);
+        setTotalPages(res.data.totalPages);
+      })
+      .catch((err) => console.log(err));
+  }, [page, search]);
+
+  // Update Status Handler
+  const handleStatusChange = (id, newStatus) => {
+    const token = sessionStorage.getItem("token");
+
+    axios
+      .put(
+        `${import.meta.env.VITE_API_URL}salary/salary-status/${id}`,
+        { paymentStatus: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(() => {
+        // update UI without reloading
+        setSalary((prev) =>
+          prev.map((s) =>
+            s._id === id ? { ...s, paymentStatus: newStatus } : s
+          )
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  return (
+    <div className="p-4 w-full min-h-screen bg-gray-100">
+      <h3 className="text-2xl font-bold mb-4">Salary Management</h3>
+
+      {/* Search + Add */}
+      <div className="flex justify-between">
+        <input
+          type="text"
+          placeholder="Search by Emp ID"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="p-3 w-72 border rounded-lg mt-6"
+        />
+
+        <button
+          onClick={() => navigate("/addsalary")}
+          className="bg-teal-700 text-white w-52 h-12 mt-6 rounded-md"
+        >
+          Add Salary
+        </button>
+      </div>
+
+      {/* TABLE */}
+      <div className="mt-6 bg-white rounded-lg shadow-md p-4">
+        <table className="w-full text-left">
+          <thead className="bg-gray-50 sticky top-0">
+            <tr>
+              <th className="p-2">S.no</th>
+              <th className="p-2">Emp ID</th>
+              <th className="p-2">Name</th>
+              <th className="p-2">Status</th>
+              <th className="p-2">Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {salary.map((s, index) => (
+              <tr key={s._id} className="border-b">
+                <td className="p-2">{index + 1}</td>
+                <td className="p-2">{s.employeeId?.empId}</td>
+                <td className="p-2">{s.employeeId?.userName}</td>
+                <td className="p-2">
+                  <select
+                    value={s.paymentStatus}
+                    onChange={(e) => handleStatusChange(s._id, e.target.value)}
+                    className="border px-2 py-1 rounded"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Paid">Paid</option>
+                  </select>
+                </td>
+                <td className="p-2">
+                  {s.month}
+                  {/* <button
+                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                    onClick={() => navigate(`/salarydetails?id=${s._id}`)}
+                  >
+                    View
+                  </button> */}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+          className="px-3 py-1 border rounded"
+        >
+          {"<"}
+        </button>
+
+        <p>
+          {page} of {totalPages}
+        </p>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+          className="px-3 py-1 border rounded"
+        >
+          {">"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default ManageSalary;

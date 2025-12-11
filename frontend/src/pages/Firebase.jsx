@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVjXjWqtjVNUPJAlJrWiC5OWsyLtErDKw",
@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "emsc-4f28a.firebasestorage.app",
   messagingSenderId: "242663830612",
   appId: "1:242663830612:web:c86b9f17d60e239c87a9c1",
-  measurementId: "G-LZ1MLEWJ0W"
+  measurementId: "G-LZ1MLEWJ0W",
 };
 
 // Initialize Firebase

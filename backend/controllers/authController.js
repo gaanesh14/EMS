@@ -54,11 +54,15 @@ export const loginUser = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const payload = { id: user._id, role: user.role };
+    //const payload = { id: user._id, role: user.role };
 
-    const token = JWT.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = JWT.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
 
     res.json({
       message: "Login Success",
@@ -143,11 +147,9 @@ export const changePassword = async (req, res) => {
     }
 
     if (employee.authProvider === "google") {
-      return res
-        .status(400)
-        .json({
-          message: "You are login with Google password change is not Allowed!",
-        });
+      return res.status(400).json({
+        message: "You are login with Google password change is not Allowed!",
+      });
     }
 
     const isMatch = await bcrypt.compare(oldPassword, employee.password);

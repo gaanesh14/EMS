@@ -11,16 +11,16 @@ const empSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    authProvider:{
-      type:String,
-      enum:["local","google"],
-      default:'local'
+    authProvider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
     },
     password: {
       type: String,
-        required:function(){
-        return this.authProvider === "local"
-      }
+      required: function () {
+        return this.authProvider === "local";
+      },
     },
     role: {
       type: String,
@@ -33,7 +33,7 @@ const empSchema = new mongoose.Schema(
     empId: {
       type: String,
     },
-    dob: {
+    doj: {
       //type:Date,
       type: String,
       createdAt: Date,
@@ -44,7 +44,7 @@ const empSchema = new mongoose.Schema(
     },
     maritalStatus: {
       type: String,
-      enum: ["Married","Un Married", "Single"],
+      enum: ["Married", "Un Married", "Single"],
     },
     department: {
       type: String,
