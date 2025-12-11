@@ -19,7 +19,6 @@ export default function MyProfile() {
             alt="profile"
             className="w-40 h-40 rounded-full border shadow-md object-cover"
           />
-
           <p className="mt-4 text-lg font-semibold text-gray-700">
             {user?.userName}
           </p>
@@ -39,18 +38,12 @@ export default function MyProfile() {
             <p>
               <strong>Email:</strong> {user?.email}
             </p>
-
             <p>
               <strong>Role:</strong> {user?.role}
             </p>
             <p>
               <strong>Employee ID:</strong> {user?.id || "N/A"}
             </p>
-
-            {/* <p>
-              <strong>Gender:</strong> {user?.gender || "N/A"}
-            </p> */}
-
             <p>
               <strong>Designation:</strong> {user?.designation || "N/A"}
             </p>

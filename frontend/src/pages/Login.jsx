@@ -57,7 +57,7 @@ function Login() {
       sessionStorage.setItem("role", res.data.user.role);
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
       sessionStorage.setItem("id", res.data.user.id);
-      sessionStorage.setItem("provider", res.data.user.authProvider)
+      sessionStorage.setItem("provider", res.data.user.authProvider);
       toast.success("Google Login Successful!");
       syncUser();
       navigate("/dashboard");

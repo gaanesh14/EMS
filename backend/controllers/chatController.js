@@ -4,8 +4,8 @@ import Department from "../models/departmentSchema.js";
 import dotenv from "dotenv";
 
 dotenv.config();
-const groq = new Groq({ 
-     apiKey: process.env.GROQ_API_KEY
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 export const chatWithAI = async (req, res) => {
@@ -28,14 +28,13 @@ export const chatWithAI = async (req, res) => {
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "system", content: context },
-        { role: "user", content: message }
+        { role: "user", content: message },
       ],
       temperature: 0.7,
     });
 
     const reply = completion.choices[0].message.content;
     res.json({ reply });
-
   } catch (error) {
     console.error("AI ERROR:", error.message);
     res.status(500).json({

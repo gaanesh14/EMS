@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { MdCloudUpload } from "react-icons/md";
 import { TiDelete } from "react-icons/ti";
+import { MdClose } from "react-icons/md";
 
 export default function EmployeeProfile() {
   const [employee, setEmployee] = useState(null);
@@ -85,10 +86,20 @@ export default function EmployeeProfile() {
     }));
   };
 
+  const closeButton = () => {
+    navigate("/employees");
+  };
+
   return (
-    <div className="p-10 w-full bg-gray-100">
-      <div className="bg-teal-600 text-white p-4 rounded-lg text-xl">
+    <div className="p-10 w-full bg-gray-100 min-h-screen">
+      <div className="bg-teal-600 text-white p-4 rounded-lg text-xl flex justify-between">
         Employee Details
+        <button
+          onClick={closeButton}
+          className=" hover:bg-red-600 p-1 rounded-lg"
+        >
+          <MdClose className="text-2xl" />
+        </button>
       </div>
 
       <div className="mt-8 bg-white shadow-lg p-10 rounded-xl flex items-center gap-16">

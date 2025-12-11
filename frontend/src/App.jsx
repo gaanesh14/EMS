@@ -17,6 +17,13 @@ import AdminRoute from "./components/common/ProtectedRoute";
 import MyProfile from "./components/employee/MyProfile";
 import Chatbot from "./components/common/ChatBot";
 import ChangePassword from "./components/employee/ChangePassword";
+import Leavepage from "./components/employee/Leavepage";
+import Salarypage from "./components/employee/Salarypage";
+import ApplyLeave from "./components/employee/ApplyLeave";
+import ManageLeaves from "./components/admin/ManageLeaves";
+import ManageSalary from "./components/admin/ManageSalary";
+import Leavedetails from "./components/admin/Leavedetails";
+import AddSalary from "./components/admin/AddSalary";
 
 function App() {
   return (
@@ -33,6 +40,9 @@ function App() {
     <Route path="/" element={<Dashboard />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/myprofile" element={<MyProfile />} />
+    <Route path="/leave" element={<Leavepage/>}/>
+    <Route path="/salary" element={<Salarypage/>}/>
+    <Route path="/applyleave" element={<ApplyLeave/>}/>
 
     {/* ADMIN ONLY */}
     <Route path="/employees" element={<AdminRoute><ManageEmployees /></AdminRoute>} />
@@ -43,6 +53,11 @@ function App() {
     <Route path="/department" element={<AdminRoute><ManageDepartments /></AdminRoute>} />
     <Route path="/adddepartment" element={<AdminRoute><AddDepartment /></AdminRoute>} />
     <Route path="/editdepartment/:id" element={<AdminRoute><UpdateDepartment /></AdminRoute>} />
+
+    <Route path="/manageleaves" element={<AdminRoute><ManageLeaves/></AdminRoute>}/>
+    <Route path="/managesalary" element={<AdminRoute><ManageSalary/></AdminRoute>}/>
+    <Route path="/leavedetails" element={<AdminRoute><Leavedetails/></AdminRoute>}/>
+    <Route path="/addsalary" element={<AdminRoute><AddSalary/></AdminRoute>}/>
 
     <Route path="/chatbot" element={<AdminRoute><Chatbot /></AdminRoute>} />
     <Route path='/settings' element={<AdminRoute><ChangePassword/></AdminRoute>} />

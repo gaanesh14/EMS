@@ -8,7 +8,6 @@ export default function ManageEmployees() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 10;
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -45,9 +44,12 @@ export default function ManageEmployees() {
   const handleDelete = async (id) => {
     try {
       const token = sessionStorage.getItem("token");
-      await axios.delete(`${import.meta.env.VITE_API_URL}employee/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}employee/delete/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       console.log("deleted successfully:");
       toast.success("Employee Deleted successfully");
       setEmployees((prev) => prev.filter((emp) => emp._id !== id));
@@ -182,6 +184,5 @@ export default function ManageEmployees() {
         </div>
       </div>
     </div>
-    // </div>
   );
 }

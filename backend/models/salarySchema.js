@@ -10,14 +10,15 @@ const salarySchema = new mongoose.Schema(
     month: {
       type: String,
       required: true,
-    }, 
+    },
     basicSalary: {
       type: Number,
       required: true,
     },
-    bonus: { 
-        type: Number, 
-        default: 0 },
+    bonus: {
+      type: Number,
+      default: 0,
+    },
     deductions: {
       type: Number,
       default: 0,

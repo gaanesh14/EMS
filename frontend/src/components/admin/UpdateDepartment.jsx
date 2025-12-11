@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
+import { MdClose } from "react-icons/md";
 
 function UpdateDepartment() {
   const [name, setName] = useState("");
@@ -47,12 +48,22 @@ function UpdateDepartment() {
     }
   };
 
+  const closeButton = () => {
+    navigate("/department");
+  };
+
   return (
     <div className="flex justify-center items-center p-8 ">
       <div className="bg-white w-full max-w-lg shadow-xl rounded-xl p-8">
-        <h2 className="text-2xl font-bold mb-6 text-gray-700 pb-2 border-b text-center">
-          Edit Department
-        </h2>
+        <div className="flex justify-between mb-6 border-b pb-2">
+          <h2 className="text-2xl font-bold text-gray-700 ">Edit Department</h2>
+          <button
+            onClick={closeButton}
+            className="h-6 w-6 text-2xl -mt-4 hover:bg-red-500 rounded-lg"
+          >
+            <MdClose />
+          </button>
+        </div>
 
         <form onSubmit={handleUpdate} className="flex flex-col gap-6">
           {/* Department Name */}

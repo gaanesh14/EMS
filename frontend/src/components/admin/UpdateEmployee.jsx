@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
 
 function UpdateEmployee() {
   const [mail, setmail] = useState("");
-  const [dob, setDob] = useState("");
+  const [doj, setDoj] = useState("");
   const [gender, setGender] = useState("");
   const [maritalStatus, setMaritalStatus] = useState("");
   const [empId, setEmpId] = useState("");
@@ -13,7 +14,6 @@ function UpdateEmployee() {
   const [department, setDepartment] = useState("");
   const [role, setRole] = useState("");
 
-  
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -29,7 +29,7 @@ function UpdateEmployee() {
 
         // PREFILL THE FORM
         setmail(emp.email); // FIX: email, not mail
-        setDob(emp.dob);
+        setDoj(emp.doj);
         setGender(emp.gender);
         setMaritalStatus(emp.maritalStatus);
         setEmpId(emp.empId);
@@ -43,17 +43,8 @@ function UpdateEmployee() {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (
-      !mail ||
-      !dob ||
-      !gender ||
-      !maritalStatus ||
-      !empId ||
-      !designation ||
-      !department ||
-      !role
-    ) {
-      toast.error("All fields are required");
+    if (!mail || !empId || !designation || !department || !role) {
+      toast.error("Please fill required fields");
       return;
     }
 
@@ -64,7 +55,7 @@ function UpdateEmployee() {
         `${import.meta.env.VITE_API_URL}employee/edit/${id}`, // employee id from params
         {
           email: mail,
-          dob,
+          doj,
           gender,
           maritalStatus,
           empId,
@@ -88,19 +79,28 @@ function UpdateEmployee() {
       toast.error(error.response?.data?.message || "Error updating employee");
     }
   };
+  const closeButton = () => {
+    navigate("/employees");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-start py-10">
       <div className="bg-white w-full max-w-4xl shadow-xl rounded-xl p-8">
-        <h2 className="text-2xl font-bold text-gray-700 mb-6 border-b pb-2">
-          Edit Employee
-        </h2>
+        <div className="flex justify-between mb-6 border-b pb-2">
+          <h2 className="text-2xl font-bold text-gray-700 ">Edit Employee</h2>
+          <button
+            onClick={closeButton}
+            className="h-6 w-6 text-2xl -mt-4 hover:bg-red-500 rounded-lg"
+          >
+            <MdClose />
+          </button>
+        </div>
 
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Employee ID */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
-              Employee ID
+              Employee ID {""} *
             </label>
             <input
               type="text"
@@ -111,15 +111,15 @@ function UpdateEmployee() {
             />
           </div>
 
-          {/* DOB */}
+          {/* DOJ */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
-              Date Of Birth
+              Date Of Joining
             </label>
             <input
               type="date"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
+              value={doj}
+              onChange={(e) => setDoj(e.target.value)}
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
             />
           </div>
@@ -157,7 +157,7 @@ function UpdateEmployee() {
           {/* Designation */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
-              Designation
+              Designation {""} *
             </label>
             <input
               type="text"
@@ -170,7 +170,9 @@ function UpdateEmployee() {
 
           {/* Department */}
           <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">Department</label>
+            <label className="font-medium text-gray-600 mb-1">
+              Department {""} *
+            </label>
             <select
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
@@ -185,7 +187,9 @@ function UpdateEmployee() {
 
           {/* Email */}
           <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">Email</label>
+            <label className="font-medium text-gray-600 mb-1">
+              Email{""} *
+            </label>
             <input
               type="email"
               placeholder="Insert Mail"
@@ -197,7 +201,7 @@ function UpdateEmployee() {
 
           {/* {Role} */}
           <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">Role</label>
+            <label className="font-medium text-gray-600 mb-1">Role{""} *</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
