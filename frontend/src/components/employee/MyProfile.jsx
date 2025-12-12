@@ -8,7 +8,7 @@ export default function MyProfile() {
     : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   return (
-    <div className="p-8">
+    <div className="p-8 bg-gray-200 min-h-screen">
       <h1 className="text-3xl font-bold mb-6 text-gray-700">My Profile</h1>
 
       <div className="bg-gray-50 shadow-lg rounded-xl p-8 flex gap-10 items-start max-w-2xl">

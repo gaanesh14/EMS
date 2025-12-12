@@ -50,9 +50,8 @@ function ChangePassword() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow mt-8">
+    <div className="max-w-md mx-auto bg-gray-100 p-6 rounded shadow mt-8">
       <h2 className="text-xl font-semibold mb-4">Change Password</h2>
-
       <input
         type="password"
         placeholder="Old Password"
