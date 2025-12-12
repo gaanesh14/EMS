@@ -68,9 +68,10 @@ function ManageSalary() {
       </div>
 
       {/* TABLE */}
-      <div className="mt-6 bg-white rounded-lg shadow-md p-4">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 sticky top-0">
+      <div className="mt-6 bg-white rounded-lg shadow-md ">
+        <div className='max-h-96 overflow-y-auto'>
+        <table className="w-full text-left border-collapse">
+          <thead className="sticky top-0 bg-gray-50 shadow z-10">
             <tr>
               <th className="p-2">S.no</th>
               <th className="p-2">Emp ID</th>
@@ -110,6 +111,7 @@ function ManageSalary() {
           </tbody>
 
         </table>
+        </div>
       </div>
 
       {/* Pagination */}
@@ -120,7 +122,7 @@ function ManageSalary() {
         <button
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
-          className="px-3 py-1 border rounded"
+          className="px-3 py-1 border rounded disabled:opacity-40"
         >
           {"<"}
         </button>
@@ -128,7 +130,7 @@ function ManageSalary() {
         <button
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
-          className="px-3 py-1 border rounded"
+          className="px-3 py-1 border rounded disabled:opacity-40"
         >
           {">"}
         </button>

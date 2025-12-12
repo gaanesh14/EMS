@@ -124,9 +124,10 @@ function AddSalary() {
             </label>
             <input
               type="text"
-              placeholder="Enter unique employee ID"
+              pattern="[0-9]*"
+              placeholder="Salary"
               value={basicSalary}
-              onChange={(e) => setBasicSalary(e.target.value)}
+              onChange={(e) => setBasicSalary(e.target.value.replace(/[^0-9]/g,''))}
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>
@@ -136,9 +137,10 @@ function AddSalary() {
             <label className="font-medium text-gray-600 mb-1">Allowance</label>
             <input
               type="text"
+              pattern="[0-9]*"
               placeholder="allloance"
               value={allowance}
-              onChange={(e) => setAllowance(e.target.value)}
+              onChange={(e) => setAllowance(e.target.value.replace(/[^0-9]/g,''))}
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>
@@ -149,9 +151,10 @@ function AddSalary() {
             <label className="font-medium text-gray-600 mb-1">Deduction</label>
             <input
               type="text"
+              pattern="[0-9]*"
               placeholder="dedution"
               value={deductions}
-              onChange={(e) => setDeductions(e.target.value)}
+              onChange={(e) => setDeductions(e.target.value.replace(/[^0-9]/g,''))}
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>

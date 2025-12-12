@@ -60,10 +60,10 @@ function Leavepage() {
         </button>
       </div>
       {/* {table} */}
-      <div className="mt-4 bg-white rounded-lg shadow-md p-4">
+      <div className="mt-4 bg-white rounded-lg shadow-md p-1">
         <div className="max-h-96 overflow-y-auto">
           <table className="w-full text-left border-collapse">
-            <thead className="sticky top-0 bg-white shadow z-10">
+            <thead className="sticky top-0 bg-gray-50 shadow z-10">
               <tr className="border-b">
                 <th className="p-2"> S.no</th>
                 <th className="p-2"> Leave Type</th>
