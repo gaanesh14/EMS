@@ -37,10 +37,6 @@ export default function ManageEmployees() {
   const startIndex = 0; // backend already paginated
   const paginated = filtered;
 
-  const handleCreateEmp = (e) => {
-    e.preventDefault();
-    navigate("/addemployee");
-  };
   const handleDelete = async (id) => {
     try {
       const token = sessionStorage.getItem("token");
@@ -77,7 +73,7 @@ export default function ManageEmployees() {
         />
 
         <button
-          onClick={handleCreateEmp}
+          onClick={() => navigate('/addemployee')}
           className="bg-teal-700 text-white w-52 h-[20] mt-6 rounded-md font-semibold"
         >
           Add New Employee
@@ -104,7 +100,7 @@ export default function ManageEmployees() {
                 paginated.map((emp, index) => (
                   <tr key={emp._id} className="border-b">
                     <td className="p-3">{startIndex + index + 1}</td>
-                    <td className="p-3">{emp._id}</td>
+                    <td className="p-3">{emp.empId || "N/A"}</td>
                     <td className="p-2">
                       <img
                         src={

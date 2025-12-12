@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 function AddSalary() {
   const [employees, setEmployees] = useState([]);
@@ -12,6 +13,21 @@ function AddSalary() {
   const [allowance, setAllowance] = useState("");
   const [deductions, setDeductions] = useState("");
   const [month, setMonth] = useState("");
+
+  const navigate = useNavigate()
+
+    // Update Department
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}department/all`
+      );
+      setDepartments(data.department);
+    };
+    fetchDepartments();
+  }, [department]);
 
   useEffect(() => {
     if (!department) return;
@@ -48,6 +64,7 @@ function AddSalary() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => toast.success("Salary added successfully"))
+      navigate('/managesalary')
       .catch((err) => toast.error(err.response?.data?.message || "Error"));
   };
 
@@ -74,9 +91,11 @@ function AddSalary() {
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
             >
               <option value="">Select department</option>
-              <option value="IT">IT</option>
-              <option value="Logistics">Logistics</option>
-              <option value="HR">Human Resource</option>
+               {departments.map((dept) => (
+                 <option key={dept._id} value={dept.name}> 
+                    {dept.name}
+                 </option>
+               ))}
             </select>
           </div>
 

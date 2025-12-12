@@ -49,7 +49,7 @@ export const updatedLeaveStatus = async (req, res) => {
 export const getLeaveById = async (req, res) => {
   try {
     const leave = await Leave.findById(req.params.id).populate(
-      "empId",
+      "employeeId",
       "userName email department image empId"
     );
 
@@ -111,7 +111,7 @@ export const getAllLeaves = async (req, res) => {
     const totalLeaves = await Leave.countDocuments(query);
 
     const leaves = await Leave.find(query)
-      .populate("empId", "userName email department")
+      .populate("empId", "userName email department empId")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);

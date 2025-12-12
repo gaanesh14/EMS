@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,18 @@ function AddEmployees() {
   const [role, setRole] = useState("");
 
   const navigate = useNavigate();
+
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}department/all`
+      );
+      setDepartments(data.department);
+    };
+    fetchDepartments();
+  }, [department]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -138,6 +150,23 @@ function AddEmployees() {
             />
           </div>
 
+          {/* Department */}
+          <div className="flex flex-col">
+            <label className="font-medium text-gray-600 mb-1">Department</label>
+            <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+            >
+              <option value="">Select department</option>
+              {departments.map((dept) => (
+                <option key={dept._id} value={dept.name}>
+                  {dept.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* DOJ */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
@@ -195,20 +224,6 @@ function AddEmployees() {
             />
           </div>
 
-          {/* Department */}
-          <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">Department</label>
-            <select
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
-            >
-              <option value="">Select department</option>
-              <option value="IT">IT</option>
-              <option value="Logistics">Logistics</option>
-              <option value="HR">Human Resource</option>
-            </select>
-          </div>
           {/* {role} */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">Role</label>

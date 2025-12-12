@@ -58,7 +58,7 @@ export const addSalary = async (req, res) => {
 // @ get Emp salary
 export const getMySalary = async (req, res) => {
   try {
-    const salaries = await Salary.find({ employeeId: req.user.id }).sort({
+    const salaries = await Salary.find({ employeeId: req.user.id }).populate("employeeId","empId username").sort({
       createdAt: -1,
     });
 

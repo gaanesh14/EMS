@@ -1,6 +1,6 @@
 import Employee from "../models/empSchema.js";
 import bcrypt from "bcryptjs";
-import JWT from "jsonwebtoken";
+
 
 //  Route @get users
 export const getEmployees = async (req, res) => {
@@ -9,7 +9,7 @@ export const getEmployees = async (req, res) => {
     const limit = 10; // 10 per page
     const skip = (page - 1) * limit;
 
-    const employees = await Employee.find().skip(skip).limit(limit);
+    const employees = await Employee.find().skip(skip).limit(limit)
     const total = await Employee.countDocuments();
 
     res.json({
