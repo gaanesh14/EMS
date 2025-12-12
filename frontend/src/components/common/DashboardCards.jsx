@@ -34,7 +34,6 @@ export default function DashboardCards() {
           employeeCount: response.data.employeeCount,
           departmentCount: response.data.departmentCount,
         });
-        console.log("counts", response.data);
       } catch (error) {
         console.error("Error fetching counts:", error);
       }
@@ -84,8 +83,10 @@ export default function DashboardCards() {
           <div className="text-3xl">
             <FaMoneyCheckAlt />
           </div>
-          <h3 className="text-lg font-semibold mt-2"> Salary </h3>
-          <p className="text-2xl font-bold"> 10000 </p>
+          <h3 className="text-lg font-semibold mt-2">
+            <Link to='/managesalary'> Salary  </Link>
+          </h3>
+          <p className="text-2xl font-bold"> $10000 </p>
         </div>
       </div>
       <h2 className="text-3xl font-bold p-3 mt-6 flex justify-center items-center">

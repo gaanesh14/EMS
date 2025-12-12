@@ -42,7 +42,7 @@ export default function MyProfile() {
               <strong>Role:</strong> {user?.role}
             </p>
             <p>
-              <strong>Employee ID:</strong> {user?.id || "N/A"}
+              <strong>Employee ID:</strong> {user?.empId || "N/A"}
             </p>
             <p>
               <strong>Designation:</strong> {user?.designation || "N/A"}

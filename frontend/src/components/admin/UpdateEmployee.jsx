@@ -17,6 +17,20 @@ function UpdateEmployee() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // Update Department
+  const [departments, setDepartments] = useState([]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}department/all`
+      );
+      setDepartments(data.department);
+    };
+    fetchDepartments();
+  }, [department]);
+
+  // get data from backend
   useEffect(() => {
     const token = sessionStorage.getItem("token");
 
@@ -100,7 +114,7 @@ function UpdateEmployee() {
           {/* Employee ID */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
-              Employee ID {""} *
+              Employee ID
             </label>
             <input
               type="text"
@@ -122,6 +136,21 @@ function UpdateEmployee() {
               onChange={(e) => setDoj(e.target.value)}
               className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
             />
+          </div>
+          {/* Department */}
+          <div className="flex flex-col">
+            <label className="font-medium text-gray-600 mb-1">Department</label>
+            <select
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
+            >
+              {departments.map((dept) => (
+                <option key={dept._id} value={dept.name}>
+                  {dept.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Gender */}
@@ -157,7 +186,7 @@ function UpdateEmployee() {
           {/* Designation */}
           <div className="flex flex-col">
             <label className="font-medium text-gray-600 mb-1">
-              Designation {""} *
+              Designation
             </label>
             <input
               type="text"
@@ -168,28 +197,9 @@ function UpdateEmployee() {
             />
           </div>
 
-          {/* Department */}
-          <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">
-              Department {""} *
-            </label>
-            <select
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              className="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
-            >
-              <option value="">Select Department</option>
-              <option value="IT">IT</option>
-              <option value="Logistics">Logistics</option>
-              <option value="HR">Human Resource</option>
-            </select>
-          </div>
-
           {/* Email */}
           <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">
-              Email{""} *
-            </label>
+            <label className="font-medium text-gray-600 mb-1">Email</label>
             <input
               type="email"
               placeholder="Insert Mail"
@@ -201,7 +211,7 @@ function UpdateEmployee() {
 
           {/* {Role} */}
           <div className="flex flex-col">
-            <label className="font-medium text-gray-600 mb-1">Role{""} *</label>
+            <label className="font-medium text-gray-600 mb-1">Role</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}

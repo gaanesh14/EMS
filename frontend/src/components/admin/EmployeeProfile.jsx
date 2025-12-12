@@ -143,8 +143,8 @@ export default function EmployeeProfile() {
         {/* DETAILS SECTION */}
         <div>
           <Detail label="Name" value={employee.userName} />
-          <Detail label="Employee ID" value={employee._id} />
-          <Detail label="Date of Birth" value={employee.dob} />
+          <Detail label="Employee ID" value={employee.empId} />
+          <Detail label="Date of Joining" value={employee.dob} />
           <Detail label="Gender" value={employee.gender} />
           <Detail label="Department" value={employee.department} />
           <Detail label="Marital Status" value={employee.maritalStatus} />

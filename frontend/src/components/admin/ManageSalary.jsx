@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function ManageSalary() {
   const [salary, setSalary] = useState([]);
@@ -15,44 +15,38 @@ function ManageSalary() {
     const token = sessionStorage.getItem("token");
 
     axios
-      .get(
-        `${
-          import.meta.env.VITE_API_URL
-        }salary/all?page=${page}&limit=10&search=${search}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .get(`${import.meta.env.VITE_API_URL}salary/all?page=${page}&limit=10&search=${search}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       .then((res) => {
         setSalary(res.data.salaries);
         setTotalPages(res.data.totalPages);
       })
       .catch((err) => console.log(err));
+      
   }, [page, search]);
 
   // Update Status Handler
   const handleStatusChange = (id, newStatus) => {
     const token = sessionStorage.getItem("token");
 
-    axios
-      .put(
-        `${import.meta.env.VITE_API_URL}salary/salary-status/${id}`,
-        { paymentStatus: newStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then(() => {
-        // update UI without reloading
-        setSalary((prev) =>
-          prev.map((s) =>
-            s._id === id ? { ...s, paymentStatus: newStatus } : s
-          )
-        );
-      })
-      .catch((err) => console.log(err));
+    axios.put(
+      `${import.meta.env.VITE_API_URL}salary/salary-status/${id}`,
+      { paymentStatus: newStatus },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    .then(() => {
+      // update UI without reloading
+      setSalary(prev => prev.map(s =>
+        s._id === id ? { ...s, paymentStatus: newStatus } : s
+      ));
+    })
+    .catch((err) => console.log(err));
   };
 
   return (
     <div className="p-4 w-full min-h-screen bg-gray-100">
+      
       <h3 className="text-2xl font-bold mb-4">Salary Management</h3>
 
       {/* Search + Add */}
@@ -103,7 +97,7 @@ function ManageSalary() {
                   </select>
                 </td>
                 <td className="p-2">
-                  {s.month}
+                   {s.month}
                   {/* <button
                     className="px-3 py-1 bg-blue-600 text-white rounded"
                     onClick={() => navigate(`/salarydetails?id=${s._id}`)}
@@ -114,11 +108,15 @@ function ManageSalary() {
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex justify-end gap-6 items-center mt-4">
+
+         <p>{page} of {totalPages}</p>
+
         <button
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
@@ -126,10 +124,6 @@ function ManageSalary() {
         >
           {"<"}
         </button>
-
-        <p>
-          {page} of {totalPages}
-        </p>
 
         <button
           disabled={page === totalPages}
@@ -139,6 +133,7 @@ function ManageSalary() {
           {">"}
         </button>
       </div>
+
     </div>
   );
 }

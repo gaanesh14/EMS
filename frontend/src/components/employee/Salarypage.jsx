@@ -17,7 +17,7 @@ function Salarypage() {
   }, []);
 
   const filteredSalaries = salaries.filter((item) =>
-    item.employeeId?.toLowerCase().includes(search.toLowerCase())
+    item.employeeId?.empId?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (

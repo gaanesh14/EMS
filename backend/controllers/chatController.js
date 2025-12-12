@@ -1,6 +1,8 @@
 import Groq from "groq-sdk";
 import Employee from "../models/empSchema.js";
 import Department from "../models/departmentSchema.js";
+import Leave from "../models/leaveSchema.js";
+import Salary from "../models/salarySchema.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,10 +16,14 @@ export const chatWithAI = async (req, res) => {
 
     const totalEmployees = await Employee.countDocuments();
     const totalDepartments = await Department.countDocuments();
+    const totalLeaves = await Leave.countDocuments();
+    const totalSalary = await Salary.countDocuments();
 
     const context = `
       Total Employees: ${totalEmployees}
       Total Departments: ${totalDepartments}
+      Total leaves: ${totalLeaves}
+      Total Salary: ${totalSalary} 
     `;
 
     const SYSTEM_PROMPT = `You are a helpful AI assistant chatbot.

@@ -34,9 +34,7 @@ const empSchema = new mongoose.Schema(
       type: String,
     },
     doj: {
-      //type:Date,
-      type: String,
-      createdAt: Date,
+      type:Date,
     },
     gender: {
       type: String,
