@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
+import { MdClose } from "react-icons/md";
 
 function LeaveDetails() {
   const [leave, setLeave] = useState(null);
@@ -49,7 +50,16 @@ function LeaveDetails() {
   return (
     <div className="p-10 w-full bg-gray-100 min-h-screen flex justify-center">
       <div className="bg-white p-10 rounded-2xl shadow-xl w-[80%]">
-        <h2 className="text-3xl font-bold text-center mb-6">Leave Details</h2>
+        <h2 className="text-3xl font-bold text-center mb-8">Leave Details</h2>
+        <div className="relative">
+          <button 
+          className=" absolute -top-20 right-0  hover:bg-red-500 p-1 rounded-md"
+          onClick={() => navigate('/manageleaves')}
+          >
+            <MdClose size={22}/>
+          </button>
+        </div>
+        
 
         <div className="flex gap-16">
           {/* IMAGE */}
@@ -57,7 +67,7 @@ function LeaveDetails() {
             <div className="w-72 h-72 rounded-full border-4 border-gray-200 overflow-hidden">
               <img
                 src={
-                  leave.empId?.image ||
+                 leave.empId.image ? `http://localhost:5000/${leave.empId.image}`:
                   "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 }
                 className="w-full h-full object-cover"

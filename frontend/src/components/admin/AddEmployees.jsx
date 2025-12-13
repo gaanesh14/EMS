@@ -91,7 +91,7 @@ function AddEmployees() {
           </h2>
           <button
             onClick={closeButton}
-            className="h-6 w-6 text-2xl -mt-4 hover:bg-red-500 rounded-lg"
+            className="h-6 w-6 text-2xl -mt-2 hover:bg-red-500 rounded-md"
           >
             <MdClose />
           </button>

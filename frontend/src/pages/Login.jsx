@@ -141,7 +141,7 @@ function Login() {
         </button>
 
         <p className="text-center text-gray-600">
-          Already have an account?{" "}
+          Don't have an account? {" "}
           <span className="text-blue-600 font-medium hover:underline">
             <Link to="/register">Register</Link>
           </span>
