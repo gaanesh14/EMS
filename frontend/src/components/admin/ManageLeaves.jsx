@@ -135,7 +135,7 @@ function ManageLeaves() {
                     <td className="p-2">
                       <button
                         onClick={() =>
-                          navigate(`/leavedetails?id=${leave._id}`)
+                          navigate(`/leavedetails?id=${leave?._id}`)
                         }
                         className="px-3 py-1 bg-teal-700 text-white rounded-md"
                       >

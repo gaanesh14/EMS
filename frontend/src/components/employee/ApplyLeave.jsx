@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { MdClose } from "react-icons/md";
 
 function ApplyLeave() {
   const [fromDate, setFromDate] = useState("");
@@ -34,15 +35,24 @@ function ApplyLeave() {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-100 p-6 w-full flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       <h2 className="text-2xl font-semibold text-center mb-6">
         Request For Leave
       </h2>
-
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-3xl space-y-5 bg-white shadow-xl p-6 rounded-xl"
       >
+        <div className="relative">
+          <button
+            onClick={() => navigate("/leave")}
+            type="button"
+            className="absolute -top-2 right-2 hover:bg-red-500 p-1 rounded-md"
+          >
+            <MdClose size={22} />
+          </button>
+        </div>
+
         {/* Leave Type */}
         <div className="flex flex-col">
           <label className="text-gray-600 font-medium mb-1">Leave Type</label>

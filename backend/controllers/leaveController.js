@@ -48,14 +48,17 @@ export const updatedLeaveStatus = async (req, res) => {
 
 export const getLeaveById = async (req, res) => {
   try {
-    const leave = await Leave.findById(req.params.id).populate(
-      "employeeId",
-      "userName email department image empId"
+    const leave = await Leave.findById(req.params.id)
+    .populate(
+      "empId",
+      "userName email department image empId id image"
     );
-
+    
     res.status(200).json({ success: true, leave });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+    console.log("error",err);
+    
   }
 };
 

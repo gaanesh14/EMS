@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { MdClose } from "react-icons/md";
 
 function AddSalary() {
   const [employees, setEmployees] = useState([]);
@@ -74,10 +75,10 @@ function AddSalary() {
         <div className="flex justify-between mb-6 border-b pb-2">
           <h2 className="text-2xl font-bold text-gray-700 ">Add Salary</h2>
           <button
-            //   onClick={closeButton}
+              onClick={() => navigate('/managesalary')}
             className="h-6 w-6 text-2xl -mt-4 hover:bg-red-500 rounded-lg"
           >
-            {/* <MdClose /> */}
+            <MdClose />
           </button>
         </div>
 
