@@ -30,9 +30,9 @@ export default function EmployeeProfile() {
       .then((res) => {
         const emp = res.data.user;
 
-        setEmployee(emp); // ⭐ FIX 1
+        setEmployee(emp); 
         setName(emp.userName);
-        setMail(emp.email); // ⭐ FIX 2
+        setMail(emp.email); 
         setDob(emp.dob);
         setGender(emp.gender);
         setMaritalStatus(emp.maritalStatus);
@@ -144,7 +144,7 @@ export default function EmployeeProfile() {
         <div>
           <Detail label="Name" value={employee.userName} />
           <Detail label="Employee ID" value={employee.empId} />
-          <Detail label="Date of Joining" value={employee.dob} />
+          <Detail label="Date of Joining" value={employee.doj?.split("T")[0]} />
           <Detail label="Gender" value={employee.gender} />
           <Detail label="Department" value={employee.department} />
           <Detail label="Marital Status" value={employee.maritalStatus} />
