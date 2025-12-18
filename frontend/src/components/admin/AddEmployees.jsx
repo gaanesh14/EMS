@@ -33,22 +33,19 @@ function AddEmployees() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !userName ||
-      !email ||
-      !password ||
-      !empId ||
-      !doj ||
-      !gender ||
-      !maritalStatus ||
-      !designation ||
-      !department ||
-      !role
-    ) {
-      toast.error("All fields are required");
-      return;
-    }
-
+    const isEmpty = (value) => !value || value.trim === '';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   
+    if(isEmpty(userName)) return toast.error("userName is required")
+    if(isEmpty(email)) return toast.error("email is required")
+    if(!emailRegex.test(email)) return toast.error("correct email is required!")
+    if(isEmpty(password)) return toast.error("password is required")
+    if(isEmpty(empId)) return toast.error("empId is required")
+    if(isEmpty(doj)) return toast.error("doj is required")
+    if(isEmpty(gender)) return toast.error("gender is required")
+    if(isEmpty(maritalStatus)) return toast.error("maritalStatus is required")
+    if(isEmpty(department)) return toast.error("department is required")
+    if(isEmpty(designation)) return toast.error("designation is required")
     try {
       const token = sessionStorage.getItem("token");
 

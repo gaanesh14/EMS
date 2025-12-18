@@ -45,8 +45,9 @@ const empSchema = new mongoose.Schema(
       enum: ["Married", "Un Married", "Single"],
     },
     department: {
-      type: String,
-      enum: ["Logistics", "HR", "IT"],
+      //type: mongoose.Schema.Types.ObjectId,
+      type:String,
+      //ref:"department"
     },
     image: {
       type: String,

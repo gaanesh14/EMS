@@ -30,6 +30,11 @@ function UpdateEmployee() {
     fetchDepartments();
   }, [department]);
 
+  const formatDate = (date) => {
+  if (!date) return "";
+  return new Date(date).toISOString().split("T")[0];
+};
+
   // get data from backend
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -43,7 +48,7 @@ function UpdateEmployee() {
 
         // PREFILL THE FORM
         setmail(emp.email); // FIX: email, not mail
-        setDoj(emp.doj);
+        setDoj(formatDate(emp.doj));
         setGender(emp.gender);
         setMaritalStatus(emp.maritalStatus);
         setEmpId(emp.empId);

@@ -68,6 +68,8 @@ export const getMySalary = async (req, res) => {
   }
 };
 
+
+// update salary
 export const updateSalaryStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -93,33 +95,18 @@ export const updateSalaryStatus = async (req, res) => {
 
 export const getAllSalary = async (req, res) => {
   try {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    const search = req.query.search || "";
-
-    let query = {};
-
-    // Search by emp ID (employee.empId)
-    if (search) {
-      query = { "employee.empId": { $regex: search, $options: "i" } };
-    }
-
     const salaries = await Salary.find()
       .populate("employeeId", "userName empId department")
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Salary.countDocuments();
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
-      salaries,
-      totalPages: Math.ceil(total / limit),
+      salaries
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
