@@ -15,7 +15,7 @@ export default function ManageEmployees() {
     const token = sessionStorage.getItem("token");
 
     axios
-      .get(`${import.meta.env.VITE_API_URL}employee?page=${page}`, {
+      .get(`${import.meta.env.VITE_API_URL}employee?page=${page}&search=${search}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -27,15 +27,14 @@ export default function ManageEmployees() {
         setTotalPages(res.data.totalPages);
       })
       .catch((err) => console.log(err));
-  }, [page]);
+  }, [page,search]);
 
-  // Because backend does pagination already:
-  const filtered = employees.filter((emp) =>
-    emp.userName?.toLowerCase().includes(search.toLowerCase())
-  );
-  // Pagination logic on frontend slice
+  const handleSearch = (e) => {
+  setSearch(e.target.value);
+  setPage(1); //  reset pagination
+};
   const startIndex = 0; // backend already paginated
-  const paginated = filtered;
+  const paginated = employees;
 
   const handleDelete = async (id) => {
     try {
@@ -67,9 +66,9 @@ export default function ManageEmployees() {
         <input
           className="mt-6 p-3 w-72 border rounded-lg"
           type="text"
-          placeholder="Search By EmpName"
+          placeholder="Search By EmpName/empID"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleSearch}
         />
 
         <button
@@ -158,7 +157,7 @@ export default function ManageEmployees() {
         </p>
 
         <p>
-          {startIndex + 1}-{startIndex + paginated.length} of {filtered.length}
+          {startIndex + 1}-{startIndex + paginated.length} of {paginated.length}
         </p>
 
         <div className="flex items-center gap-3">

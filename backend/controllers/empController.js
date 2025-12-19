@@ -8,9 +8,25 @@ export const getEmployees = async (req, res) => {
     const page = parseInt(req.query.page) || 1; // default page 1
     const limit = 10; // 10 per page
     const skip = (page - 1) * limit;
+    const search = req.query.search || "";
 
-    const employees = await Employee.find().skip(skip).limit(limit)
-    const total = await Employee.countDocuments();
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { userName: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { empId: { $regex: search, $options: "i" } }, //  number/string
+        ],
+      };
+    }
+
+    const employees = await Employee.find(query)
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Employee.countDocuments(query);
 
     res.json({
       success: true,
