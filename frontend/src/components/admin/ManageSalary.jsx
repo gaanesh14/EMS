@@ -6,7 +6,6 @@ function ManageSalary() {
   const [salary, setSalary] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  // const [totalPages, setTotalPages] = useState(1);
 
   const navigate = useNavigate();
 
@@ -118,12 +117,6 @@ function ManageSalary() {
                     </td>
                     <td className="p-2">
                       {s.month}
-                      {/* <button
-                    className="px-3 py-1 bg-blue-600 text-white rounded"
-                    onClick={() => navigate(`/salarydetails?id=${s._id}`)}
-                  >
-                    View
-                  </button> */}
                     </td>
                   </tr>
                 ))

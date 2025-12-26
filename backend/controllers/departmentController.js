@@ -23,9 +23,18 @@ export const getAllDepartments = async (req, res) => {
     const page = parseInt(req.query.page) || 1; // default page 1
     const limit = 10; // 10 per page
     const skip = (page - 1) * limit;
+    const search = req.query.search || "";
 
-    const department = await Department.find().skip(skip).limit(limit);
-    const total = await Department.countDocuments();
+    let query = {}
+
+    if(search){
+      query={
+          name : { $regex:search, $options:"i"} 
+      };
+    }
+
+    const department = await Department.find(query).skip(skip).limit(limit);
+    const total = await Department.countDocuments(query);
 
     res.json({
       success: true,
