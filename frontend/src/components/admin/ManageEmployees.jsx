@@ -1,58 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { toast } from "sonner";
+import React,{useEffect } from "react";
+import { useNavigate} from "react-router-dom";
+import { useData } from "../common/DataProvider";
 
 export default function ManageEmployees() {
-  const [employees, setEmployees] = useState([]);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const navigate = useNavigate();
-  const { id } = useParams();
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
+  const navigate = useNavigate()
 
-    axios
-      .get(`${import.meta.env.VITE_API_URL}employee?page=${page}&search=${search}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+  const {  
+        employees,
+        page,
+        totalPages,
+        loading,
+        empSearch,
+        setEmpSearch,
+        setPage,
+        fetchEmployees,
+        deleteEmployee} = useData();
 
-      .then((res) => {
-        console.log("data:", res.data);
-        setEmployees(res.data.employees);
-        setTotalPages(res.data.totalPages);
-      })
-      .catch((err) => console.log(err));
-  }, [page,search]);
-
+    //  console.log("useData test:", useData);
+      
+      useEffect(() => {
+        fetchEmployees();  
+      },[page,empSearch])
+    
   const handleSearch = (e) => {
-  setSearch(e.target.value);
+  setEmpSearch(e.target.value);
   setPage(1); //  reset pagination
 };
   const startIndex = 0; // backend already paginated
-  const paginated = employees;
 
-  const handleDelete = async (id) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      await axios.delete(
-        `${import.meta.env.VITE_API_URL}employee/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log("deleted successfully:");
-      toast.success("Employee Deleted successfully");
-      setEmployees((prev) => prev.filter((emp) => emp._id !== id));
-    } catch (error) {
-      console.log("Delete Error:", error);
-      toast.error(error.response?.data?.message || "Error Delete employee");
-    }
-  };
+  // if (loading) return <div> Loading Employees...</div>
 
   return (
     <div className="p-4 w-full bg-gray-100 min-h-screen">
@@ -67,7 +44,7 @@ export default function ManageEmployees() {
           className="mt-6 p-3 w-72 border rounded-lg"
           type="text"
           placeholder="Search By EmpName/empID"
-          value={search}
+          value={empSearch}
           onChange={handleSearch}
         />
 
@@ -95,8 +72,8 @@ export default function ManageEmployees() {
             </thead>
 
             <tbody>
-              {paginated.length > 0 ? (
-                paginated.map((emp, index) => (
+              {employees.length > 0 ? (
+                employees.map((emp, index) => (
                   <tr key={emp._id} className="border-b">
                     <td className="p-3">{startIndex + index + 1}</td>
                     <td className="p-3">{emp.empId || "N/A"}</td>
@@ -130,7 +107,7 @@ export default function ManageEmployees() {
                       </button>
 
                       <button
-                        onClick={() => handleDelete(emp._id)}
+                        onClick={() => deleteEmployee(emp._id)}
                         className="bg-red-500 text-white px-3 py-1 rounded"
                       >
                         Delete
@@ -157,7 +134,7 @@ export default function ManageEmployees() {
         </p>
 
         <p>
-          {startIndex + 1}-{startIndex + paginated.length} of {paginated.length}
+          {startIndex + 1}-{startIndex + employees.length} of {employees.length}
         </p>
 
         <div className="flex items-center gap-3">

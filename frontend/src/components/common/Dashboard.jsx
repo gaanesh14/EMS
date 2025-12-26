@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardCards from "./Dashboardcards";
+import DashboardCards from "./DashboardCards";
 import { useAuth } from "./AuthContext";
 
 export default function Dashboard() {

@@ -1,57 +1,27 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useData } from "../common/DataProvider";
 
 export default function ManageDepartments() {
-  const [departments, setDepartments] = useState([]);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  //const itemsPerPage = 10;
   const navigate = useNavigate();
-  const { id } = useParams();
+
+  const {
+    department,
+    page,
+    totalPages,
+    loading,
+    depSearch,
+    setDepSearch,
+    setPage,
+    fetchDepartment,
+    deleteDepartment,
+  } = useData();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    axios
-      .get(`${import.meta.env.VITE_API_URL}department/all?page=${page}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        console.log("departments data:", res.data);
-        setDepartments(res.data.department);
-        setTotalPages(res.data.totalPages);
-      })
-      .catch((err) => console.log(err));
-  }, [page]);
-
-  const filtered = departments.filter((dep) =>
-    dep.name.toLowerCase().includes(search.toLowerCase())
-  );
+    fetchDepartment();
+  }, [page, depSearch]);
 
   const startIndex = 0;
-  const paginated = filtered;
-  // const startIndex = (page - 1) * itemsPerPage;
-  // const paginated = filtered.slice(startIndex, startIndex + itemsPerPage);
-
-  const handleDelete = async (id) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      await axios.delete(
-        `${import.meta.env.VITE_API_URL}department/delete/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log("Department deleted successfully:");
-      toast.success("Department Deleted successfully");
-      setDepartments((prev) => prev.filter((dep) => dep._id !== id));
-    } catch (error) {
-      console.log("Delete Error:", error);
-      toast.error(error.response?.data?.message || "Error Deleting Department");
-    }
-  };
 
   return (
     <div className="p-8 w-full bg-gray-100 min-h-screen">
@@ -63,8 +33,8 @@ export default function ManageDepartments() {
         <input
           className="mt-6 p-3 w-72 h-12 border rounded-lg"
           placeholder="Search By Department"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={depSearch}
+          onChange={(e) => {setDepSearch(e.target.value); setPage(1)}}
         />
         <button
           onClick={() => navigate("/adddepartment")}
@@ -86,8 +56,8 @@ export default function ManageDepartments() {
             </thead>
 
             <tbody>
-              {paginated.length > 0 ? (
-                paginated.map((dep, index) => (
+              {department.length > 0 ? (
+                department.map((dep, index) => (
                   <tr key={dep._id} className="border-b">
                     <td className="p-3">{startIndex + index + 1}</td>
                     <td className="p-3">{dep.name}</td>
@@ -100,7 +70,7 @@ export default function ManageDepartments() {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(dep._id)}
+                        onClick={() => deleteDepartment(dep._id)}
                         className="bg-red-500 text-white px-3 py-1 rounded"
                       >
                         Delete
@@ -122,8 +92,8 @@ export default function ManageDepartments() {
         <div className="flex justify-between items-center p-4">
           <p>Rows per page: 10</p>
           <p>
-            {startIndex + 1}-{startIndex + paginated.length} of{" "}
-            {filtered.length}
+            {startIndex + 1}-{startIndex + department.length} of{" "}
+            {department.length}
           </p>
 
           <div className="flex items-center gap-3">
