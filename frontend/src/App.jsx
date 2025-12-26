@@ -15,7 +15,7 @@ import UpdateDepartment from "./components/admin/UpdateDepartment";
 import EmployeeProfile from "./components/admin/EmployeeProfile";
 import AdminRoute from "./components/common/ProtectedRoute";
 import MyProfile from "./components/employee/MyProfile";
-import Chatbot from "./components/common/ChatBot";
+import Chatbot from "./components/common/Chatbot";
 import ChangePassword from "./components/employee/ChangePassword";
 import Leavepage from "./components/employee/Leavepage";
 import Salarypage from "./components/employee/Salarypage";
