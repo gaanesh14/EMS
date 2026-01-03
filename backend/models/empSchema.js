@@ -50,8 +50,9 @@ const empSchema = new mongoose.Schema(
       //ref:"department"
     },
     image: {
-      type: String,
-      default: "",
+      url: String,
+      public_id: String,
+     // default: "",
     },
   },
   { timestamps: true }

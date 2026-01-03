@@ -17,8 +17,10 @@ export default function EmployeeProfile() {
   const [designation, setDesignation] = useState("");
   const [department, setDepartment] = useState("");
 
+  const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const inputRef = React.createRef(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -30,9 +32,9 @@ export default function EmployeeProfile() {
       .then((res) => {
         const emp = res.data.user;
 
-        setEmployee(emp); 
+        setEmployee(emp);
         setName(emp.userName);
-        setMail(emp.email); 
+        setMail(emp.email);
         setDob(emp.dob);
         setGender(emp.gender);
         setMaritalStatus(emp.maritalStatus);
@@ -47,45 +49,59 @@ export default function EmployeeProfile() {
   // Upload Image
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+
     setNewImage(URL.createObjectURL(file));
+    setUploading(true);
 
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}employee/${employee._id}/image`,
-      {
-        method: "PUT",
-        body: formData,
-      }
-    );
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}upload/${employee._id}/upload`,
+        formData
+      );
 
-    const data = await res.json();
-    toast.success("Image uploaded successfully");
-    // Update UI with new image path
-    setEmployee((prev) => ({
-      ...prev,
-      image: data.image,
-    }));
+      setEmployee(res.data.employee);
+      toast.success("Image uploaded successfully");
+    } catch (err) {
+      toast.error("Upload failed");
+    } finally {
+      setUploading(false);
+
+      // ✅ SAFE ACCESS
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    }
   };
 
   // Remove Image
   const removeImage = async () => {
-    setNewImage(null);
+    try {
+      // optimistic UI (instant update)
+      setNewImage(null);
+      setEmployee((prev) => ({ ...prev, image: null }));
 
-    await fetch(
-      `${import.meta.env.VITE_API_URL}employee/${employee._id}/image/remove`,
-      { method: "PUT" }
-    );
-    toast.success("Image removed successfully");
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}upload/${employee._id}/remove`
+      );
 
-    // Update UI to remove image
-    setEmployee((prev) => ({
-      ...prev,
-      image: "",
-    }));
+      // axios auto-parses JSON
+      setEmployee(res.data.employee);
+
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+
+      toast.success("Image removed successfully");
+    } catch (err) {
+      toast.error("Failed to remove image");
+    }
   };
 
+  // Close Button
   const closeButton = () => {
     navigate("/employees");
   };
@@ -102,13 +118,21 @@ export default function EmployeeProfile() {
         </button>
       </div>
 
+      {uploading && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-4 border-white border-t-transparent" />
+        </div>
+      )}
+
       <div className="mt-8 bg-white shadow-lg p-10 rounded-xl flex items-center gap-16">
         {/* IMAGE & EDIT BUTTON */}
         <div className="flex flex-col items-center">
           <div className="w-72 h-72 rounded-full border-4 border-gray-200 flex items-center justify-center overflow-hidden">
             <img
               src={
-                newImage ? newImage : `http://localhost:5000/${employee.image}`
+                newImage
+                  ? newImage
+                  : employee.image?.url || "default-avatar.png"
               }
               className="w-full h-full object-cover"
               alt="employee"
@@ -124,6 +148,7 @@ export default function EmployeeProfile() {
               {/* <span>Upload</span> */}
               <input
                 type="file"
+                ref={inputRef}
                 className="hidden"
                 accept="image/*"
                 onChange={handleImageUpload}

@@ -98,7 +98,7 @@ export const createEmployee = async (req, res) => {
       role: "employee",
     });
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       employee,
     });
@@ -143,41 +143,6 @@ export const deleteEmployee = async (req, res) => {
       success: true,
       message: "Deleted Successfully",
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-    console.log("error", error);
-  }
-};
-
-// IMAGE UPLOAD and REMOVE
-export const uploadImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    const filePath = `uploads/${req.file.filename}`;
-
-    const updated = await Employee.findByIdAndUpdate(
-      req.params.id,
-      { image: filePath },
-      { new: true } // ⭐ return updated employee
-    );
-
-    return res.json({
-      message: "Image updated",
-      image: updated.image,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Remove Image from Employee
-export const removeImage = async (req, res) => {
-  try {
-    await Employee.findByIdAndUpdate(req.params.id, { image: "" });
-    res.json({ message: "Image removed" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
     console.log("error", error);

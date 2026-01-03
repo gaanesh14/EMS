@@ -4,7 +4,7 @@ export default function MyProfile() {
   const { user } = useAuth();
 
   const imageUrl = user?.image
-    ? `http://localhost:5000/${user.image}`
+    ? `${user.image?.url}`
     : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   return (
