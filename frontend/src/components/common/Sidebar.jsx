@@ -3,7 +3,7 @@ import { FcLeave } from "react-icons/fc";
 import { GrUserSettings } from "react-icons/gr";
 import { TbMessageChatbot } from "react-icons/tb";
 import { MdLogout } from "react-icons/md";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate, NavLink } from "react-router-dom";
 
 function Sidebar() {

@@ -1,6 +1,6 @@
 import React,{useEffect } from "react";
 import { useNavigate} from "react-router-dom";
-import { useData } from "../common/DataProvider";
+import { useData } from "../hooks/useData";
 
 export default function ManageEmployees() {
 
@@ -10,7 +10,6 @@ export default function ManageEmployees() {
         employees,
         page,
         totalPages,
-        loading,
         empSearch,
         setEmpSearch,
         setPage,

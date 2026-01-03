@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useAuth } from "../components/common/AuthContext";
+import { useAuth } from "../components/hooks/useAuth";
 import login from "../assets/bglogin.jpeg";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "./Firebase";
@@ -31,7 +31,7 @@ function Login() {
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
       sessionStorage.setItem("id", res.data.user.id);
       sessionStorage.setItem("provider", res.data.user.authProvider);
-
+      console.log("userdata:", res.data.user);
       toast.success("Login successful!");
       syncUser();
       navigate("/dashboard");
@@ -58,6 +58,8 @@ function Login() {
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
       sessionStorage.setItem("id", res.data.user.id);
       sessionStorage.setItem("provider", res.data.user.authProvider);
+      console.log("userdata:", res.data.user);
+      
       toast.success("Google Login Successful!");
       syncUser();
       navigate("/dashboard");

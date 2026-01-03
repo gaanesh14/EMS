@@ -88,47 +88,69 @@ export const loginUser = async (req, res) => {
 };
 
 export const googleLogin = async (req, res) => {
-  const { email, userName, image } = req.body;
-  // console.log("google Login:",req.body);
+  try {
+    const { email, userName, image } = req.body;
 
-  let user = await Employee.findOne({ email });
+    let user = await Employee.findOne({ email });
 
-  if (!user) {
-    // first registered user becomes admin automatically
-    const existingAdmin = await Employee.findOne({ role: "admin" });
-    const role = existingAdmin ? "employee" : "admin";
+    //  If user exists → update provider if needed
+    if (user) {
+      if (user.authProvider !== "google") {
+        user.authProvider = "google";
+      }
 
-    user = await Employee.create({
-      email,
-      userName,
-      image,
-      authProvider: "google",
-      password: null,
-      role,
-    });
-  }
+      // update image only if not already set
+      if (!user.image && image) {
+        user.image = image;
+      }
 
-  const token = JWT.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "7d",
+      await user.save();
     }
-  );
 
-  res.json({
-    message: "Login Success",
-    token,
-    user: {
-      id: user._id,
-      userName: user.userName,
-      email: user.email,
-      role: user.role,
-      image: user.image,
-      authProvider: user.authProvider,
-    },
-  });
+    //  If user does NOT exist → create minimal profile
+    if (!user) {
+      const existingAdmin = await Employee.findOne({ role: "admin" });
+      const role = existingAdmin ? "employee" : "admin";
+
+      user = await Employee.create({
+        email,
+        userName,
+        image,
+        authProvider: "google",
+        role,
+        password: null,
+      });
+    }
+
+    const token = JWT.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    //  RETURN FULL USER (same as local login)
+    res.json({
+      message: "Login Success",
+      token,
+      user: {
+        id: user._id,
+        userName: user.userName,
+        email: user.email,
+        role: user.role,
+        image: user.image,
+        gender: user.gender,
+        department: user.department,
+        designation: user.designation,
+        empId: user.empId,
+        authProvider: user.authProvider,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Google login failed" });
+  }
 };
+
 
 // Password Change
 export const changePassword = async (req, res) => {
