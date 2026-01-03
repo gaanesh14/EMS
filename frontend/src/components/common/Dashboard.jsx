@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardCards from "./DashboardCards";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Dashboard() {
 

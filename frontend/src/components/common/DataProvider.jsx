@@ -17,11 +17,10 @@ export const DataProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   const [totalPages, settotalPages] = useState(1);
   const [empSearch, setEmpSearch] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const fetchEmployees = async () => {
     try {
-      setLoading(true);
       const { data } = await axios.get(
         `${API}employee?page=${page}&search=${empSearch}`,
         authHeader
@@ -30,11 +29,8 @@ export const DataProvider = ({ children }) => {
       settotalPages(data.totalPages);
     } catch (error) {
       console.log("error:", error);
-    } finally {
-      setLoading(false);
-    }
   };
-
+}
   const deleteEmployee = async (id) => {
     await axios.delete(`${API}employee/delete/${id}`, authHeader);
     setEmployees((prev) => prev.filter((e) => e._id !== id));
@@ -73,7 +69,6 @@ export const DataProvider = ({ children }) => {
         employees,
         fetchEmployees,
         deleteEmployee,
-        loading,
         empSearch,
         setEmpSearch,
 
@@ -90,7 +85,6 @@ export const DataProvider = ({ children }) => {
   );
 };
 
-/* custom hook */
-export const useData = () => useContext(DataContext)
+
 
 

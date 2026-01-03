@@ -1,5 +1,4 @@
 import multer from "multer";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 
@@ -11,15 +10,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "emp_images",
-    allowed_formats: ["jpg", "png", "jpeg"],
-  },
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
 });
 
-const upload = multer({ storage });
 
 export { cloudinary };
 export default upload;

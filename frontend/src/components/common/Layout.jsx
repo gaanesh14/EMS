@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 function Layout() {
   const { role } = useAuth();

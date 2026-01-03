@@ -67,7 +67,7 @@ function LeaveDetails() {
             <div className="w-72 h-72 rounded-full border-4 border-gray-200 overflow-hidden">
               <img
                 src={
-                 leave.empId.image ? `http://localhost:5000/${leave.empId.image}`:
+                 leave.empId.image ? `${leave.empId.image.url}` :
                   "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 }
                 className="w-full h-full object-cover"

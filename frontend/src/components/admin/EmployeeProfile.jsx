@@ -48,58 +48,42 @@ export default function EmployeeProfile() {
 
   // Upload Image
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const file = e.target.files[0];
+  if (!file) return;
 
-    setNewImage(URL.createObjectURL(file));
-    setUploading(true);
+  setUploading(true);
+  setNewImage(URL.createObjectURL(file));
 
-    const formData = new FormData();
-    formData.append("image", file);
+  const formData = new FormData();
+  formData.append("image", file);
 
-    try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}upload/${employee._id}/upload`,
-        formData
-      );
+  const res = await axios.put(
+    `${import.meta.env.VITE_API_URL}upload/${employee._id}/upload`,
+    formData
+  );
 
-      setEmployee(res.data.employee);
-      toast.success("Image uploaded successfully");
-    } catch (err) {
-      toast.error("Upload failed");
-    } finally {
-      setUploading(false);
+  setEmployee(res.data.employee);
+  toast.success("Image uploaded!");
+  setUploading(false);
+};
 
-      // ✅ SAFE ACCESS
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-    }
-  };
 
   // Remove Image
   const removeImage = async () => {
-    try {
-      // optimistic UI (instant update)
-      setNewImage(null);
-      setEmployee((prev) => ({ ...prev, image: null }));
+  await axios.put(
+    `${import.meta.env.VITE_API_URL}upload/${employee._id}/remove`
+  );
 
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}upload/${employee._id}/remove`
-      );
+  setEmployee(prev => ({ ...prev, image: null }));
+  setNewImage(null);
 
-      // axios auto-parses JSON
-      setEmployee(res.data.employee);
+  if (inputRef.current) {
+    inputRef.current.value = ""; // KEY FIX
+  }
 
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
+  toast.success("Image removed");
+};
 
-      toast.success("Image removed successfully");
-    } catch (err) {
-      toast.error("Failed to remove image");
-    }
-  };
 
   // Close Button
   const closeButton = () => {

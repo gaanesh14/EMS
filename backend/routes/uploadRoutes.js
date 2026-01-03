@@ -1,10 +1,6 @@
 import express from "express";
 import upload from "../middleware/upload.js";
-import {
-  uploadEmployeeImage,
-  updateEmployeeImage,
-  removeEmployeeImage,
-} from "../controllers/uploadController.js";
+import { uploadImage as updateEmployeeImage, removeImage as removeEmployeeImage } from "../controllers/uploadController.js";
 
 const router = express.Router();
 
