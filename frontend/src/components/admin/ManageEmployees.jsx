@@ -81,7 +81,7 @@ export default function ManageEmployees() {
                       <img
                         src={
                           emp.image
-                            ? `http://localhost:5000/${emp?.image}`
+                            ? `${emp.image?.url}`
                             : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                         }
                         className="w-10 h-10 rounded-full border"

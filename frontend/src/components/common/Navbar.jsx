@@ -10,7 +10,7 @@ export default function Navbar() {
   const displayEmail = user?.email;
 
   const displayImage = user?.image
-    ? `http://localhost:5000/${user?.image}`
+    ? `${user.image?.url}`
     : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   return (
