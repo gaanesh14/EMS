@@ -1,36 +1,24 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePayroll } from "../hooks/usePayroll";
 
 function ManageLeaves() {
-  const [leaves, setLeaves] = useState([]);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [totalPages, setTotalPages] = useState(1);
-
   const navigate = useNavigate();
+  const {
+    leaves,
+    fetchLeaves,
+    leaveSearch,
+    setLeaveSearch,
+    statusFilter,
+    setStatusFilter,
+    page,
+    setPage,
+    totalPages,
+  } = usePayroll();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-
-    axios
-      .get(
-        `${
-          import.meta.env.VITE_API_URL
-        }leave/all-leaves?page=${page}&limit=10&search=${search}&status=${statusFilter}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        setLeaves(res.data.leaves);
-        setTotalPages(res.data.totalPages);
-      })
-      .catch((err) => console.log(err));
-  }, [page, search, statusFilter]);
+    fetchLeaves();
+  }, [page, leaveSearch, statusFilter]);
 
   return (
     <div className="p-4 w-full min-h-screen bg-gray-100">
@@ -42,8 +30,8 @@ function ManageLeaves() {
           className="p-3 w-72 border rounded-lg"
           type="text"
           placeholder="Search By Leave Type"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={leaveSearch}
+          onChange={(e) => setLeaveSearch(e.target.value)}
         />
 
         <div className="flex gap-3">

@@ -28,11 +28,11 @@ function AddSalary() {
       setDepartments(data.department);
     };
     fetchDepartments();
-  }, [department]);
+  }, []);
 
+  // Fetch Employees based on department
   useEffect(() => {
     if (!department) return;
-
     const token = sessionStorage.getItem("token");
 
     axios

@@ -1,27 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { usePayroll } from "../hooks/usePayroll";
 
 function ManageSalary() {
-  const [salary, setSalary] = useState([]);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-
   const navigate = useNavigate();
 
-  // Fetch salary list
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
+  const {
+    fetchSalary,
+    salarySearch,
+    setSalarySearch,
+    salary,
+    setSalary,
+    page,
+    setPage,
+  } = usePayroll();
 
-    axios
-      .get(`${import.meta.env.VITE_API_URL}salary/all`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        setSalary(res.data.salaries);
-      })
-      .catch((err) => console.log(err));
-  }, [page, search]);
+  useEffect(() => {
+    fetchSalary();
+  }, [page, salarySearch]);
+
+  const pageSize = 10;
+
+  // 1. filter first
+  const filteredSalary = salary.filter((s) =>
+    s.employeeId?.empId?.toLowerCase().includes(salarySearch.toLowerCase())
+  );
+
+  // 2. calculate total pages
+  const totalPages = Math.ceil(filteredSalary.length / pageSize);
+
+  // 3. paginate AFTER filtering
+  const paginatedSalary = filteredSalary.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
 
   // Update Status Handler
   const handleStatusChange = (id, newStatus) => {
@@ -44,22 +57,6 @@ function ManageSalary() {
       .catch((err) => console.log(err));
   };
 
-  const pageSize = 10;
-
-  // 1. filter first
-  const filteredSalary = salary.filter((s) =>
-    s.employeeId?.empId?.toLowerCase().includes(search.toLowerCase())
-  );
-
-  // 2. calculate total pages
-  const totalPages = Math.ceil(filteredSalary.length / pageSize);
-
-  // 3. paginate AFTER filtering
-  const paginatedSalary = filteredSalary.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
-
   return (
     <div className="p-4 w-full min-h-screen bg-gray-100">
       <h3 className="text-2xl font-bold mb-4">Salary Management</h3>
@@ -69,8 +66,8 @@ function ManageSalary() {
         <input
           type="text"
           placeholder="Search by Emp ID"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={salarySearch}
+          onChange={(e) => setSalarySearch(e.target.value)}
           className="p-3 w-72 border rounded-lg mt-6"
         />
 
@@ -115,9 +112,7 @@ function ManageSalary() {
                         <option value="Paid">Paid</option>
                       </select>
                     </td>
-                    <td className="p-2">
-                      {s.month}
-                    </td>
+                    <td className="p-2">{s.month}</td>
                   </tr>
                 ))
               ) : (
@@ -128,7 +123,6 @@ function ManageSalary() {
                 </tr>
               )}
             </tbody>
-
           </table>
         </div>
       </div>
@@ -155,7 +149,6 @@ function ManageSalary() {
           {">"}
         </button>
       </div>
-
     </div>
   );
 }
