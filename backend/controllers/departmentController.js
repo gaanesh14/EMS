@@ -25,11 +25,11 @@ export const getAllDepartments = async (req, res) => {
     const skip = (page - 1) * limit;
     const search = req.query.search || "";
 
-    let query = {}
+    let query = {};
 
-    if(search){
-      query={
-          name : { $regex:search, $options:"i"} 
+    if (search) {
+      query = {
+        name: { $regex: search, $options: "i" },
       };
     }
 
@@ -80,10 +80,24 @@ export const deleteDepartment = async (req, res) => {
 export const updateDepartment = async (req, res) => {
   try {
     const { name, desc } = req.body;
+    const deptId = req.params.id;
+
+    // 🔍 Check duplicate name (excluding current department)
+    const existingDept = await Department.findOne({
+      name,
+      _id: { $ne: deptId },
+    });
+
+    if (existingDept) {
+      return res.status(400).json({
+        message: "Department name already exists",
+      });
+    }
+
     const department = await Department.findByIdAndUpdate(
-      req.params.id,
+      deptId,
       { name, desc },
-      { new: true }
+      { new: true, runValidators: true }
     );
     if (!department) {
       return res.status(404).json({ message: "Department not found" });
