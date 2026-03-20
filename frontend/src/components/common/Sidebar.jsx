@@ -1,4 +1,5 @@
 import { FaUsers, FaBuilding, FaHome, FaMoneyCheck } from "react-icons/fa";
+import API from "../../utils/api";
 import { FcLeave } from "react-icons/fc";
 import { GrUserSettings } from "react-icons/gr";
 import { TbMessageChatbot } from "react-icons/tb";
@@ -10,7 +11,12 @@ function Sidebar() {
   const { role, syncUser } = useAuth();
   const navigate = useNavigate();
 
-  const logOut = () => {
+  const logOut = async () => {
+    try {
+      await API.post("/auth/logout");
+    } catch (error) {
+      console.error("Server logout failed, clearing local session anyway:", error);
+    };
     sessionStorage.clear();
     syncUser();
     navigate("/login");

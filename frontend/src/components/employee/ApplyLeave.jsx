@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
@@ -15,7 +16,7 @@ function ApplyLeave() {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem("token");
-      const res = await axios.post(
+      const res = await API.post(
         `${import.meta.env.VITE_API_URL}leave/apply`,
         {
           fromDate,

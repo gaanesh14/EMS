@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import API from "../../utils/api";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +23,7 @@ function AddSalary() {
 
   useEffect(() => {
     const fetchDepartments = async () => {
-      const { data } = await axios.get(
+      const { data } = await API.get(
         `${import.meta.env.VITE_API_URL}department/all`
       );
       setDepartments(data.department);
@@ -35,7 +36,7 @@ function AddSalary() {
     if (!department) return;
     const token = sessionStorage.getItem("token");
 
-    axios
+    API
       .get(
         `${
           import.meta.env.VITE_API_URL
@@ -52,7 +53,7 @@ function AddSalary() {
 
     const token = sessionStorage.getItem("token");
 
-    axios
+     API
       .post(
         `${import.meta.env.VITE_API_URL}salary/add-salary`,
         {

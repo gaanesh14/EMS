@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API from "../../utils/api";
 import { toast } from "sonner";
 import { MdClose } from "react-icons/md";
 
@@ -14,7 +15,7 @@ function LeaveDetails() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
 
-    axios
+      API
       .get(`${import.meta.env.VITE_API_URL}leave/${leaveId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -27,7 +28,7 @@ function LeaveDetails() {
   const handleStatusUpdate = (newStatus) => {
     const token = sessionStorage.getItem("token");
 
-    axios
+    API
       .put(
         `${import.meta.env.VITE_API_URL}leave/updateleave/${leaveId}`,
         { status: newStatus },

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +32,7 @@ function ChangePassword() {
     console.log("Id before axios:", sessionStorage.getItem("id"));
 
     try {
-      const res = await axios.put(
+      const res = await API.put(
         `${import.meta.env.VITE_API_URL}auth/change-password/${id}`,
         { oldPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }

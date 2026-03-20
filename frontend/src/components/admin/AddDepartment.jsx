@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../../utils/api";
+// import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
@@ -13,7 +14,7 @@ function AddDepartment() {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem("token");
-      const createdData = await axios.post(
+      const createdData = await API.post(
         `${import.meta.env.VITE_API_URL}department/add`,
         {
           name,

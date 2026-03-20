@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter,Route,Routes } from "react-router-dom";
 import Layout from "./components/common/Layout";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -24,12 +23,15 @@ import ManageLeaves from "./components/admin/ManageLeaves";
 import ManageSalary from "./components/admin/ManageSalary";
 import Leavedetails from "./components/admin/Leavedetails";
 import AddSalary from "./components/admin/AddSalary";
+import {useTokenRefresh} from "./components/hooks/useTokenRefresh";
+
 
 function App() {
+  useTokenRefresh();
+
   return (
     <BrowserRouter>
       <Toaster position="top-right" />
-
 <Routes>
   {/* Public routes */}
   <Route path="/login" element={<Login />} />

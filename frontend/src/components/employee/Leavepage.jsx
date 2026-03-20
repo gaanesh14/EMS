@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API from "../../utils/api";
 
 function Leavepage() {
   const [leaves, setLeaves] = useState([]);
@@ -13,7 +14,7 @@ function Leavepage() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
 
-    axios
+    API
       .get(`${import.meta.env.VITE_API_URL}leave/myleave?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,

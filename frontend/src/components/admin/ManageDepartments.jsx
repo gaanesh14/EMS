@@ -14,6 +14,7 @@ export default function ManageDepartments() {
     setPage,
     fetchDepartment,
     deleteDepartment,
+    loading,
   } = useData();
 
   useEffect(() => {
@@ -21,6 +22,8 @@ export default function ManageDepartments() {
   }, [page, depSearch]);
 
   const startIndex = 0;
+  
+  loading && <div>Loading Departments...</div>;
 
   return (
     <div className="p-8 w-full bg-gray-100 min-h-screen">

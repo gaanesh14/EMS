@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import API from "../../utils/api";
 import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
 
@@ -22,7 +23,7 @@ function UpdateEmployee() {
 
   useEffect(() => {
     const fetchDepartments = async () => {
-      const { data } = await axios.get(
+      const { data } = await API.get(
         `${import.meta.env.VITE_API_URL}department/all`
       );
       setDepartments(data.department);
@@ -39,7 +40,7 @@ function UpdateEmployee() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
 
-    axios
+    API
       .get(`${import.meta.env.VITE_API_URL}employee/single/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -70,7 +71,7 @@ function UpdateEmployee() {
     try {
       const token = sessionStorage.getItem("token");
 
-      const updatedData = await axios.put(
+      const updatedData = await API.put(
         `${import.meta.env.VITE_API_URL}employee/edit/${id}`, // employee id from params
         {
           email: mail,
