@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { DataContext } from "./DataContext";
-import APi from "../../utils/Api";
+import APi from "../../utils/api";
 import axios from "axios";
 import { toast } from "sonner";
 
