@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdClose } from "react-icons/md";
@@ -14,7 +15,7 @@ function UpdateDepartment() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     // const id = window.location.pathname.split("/").pop(); // get id from URL
-    axios
+      API
       .get(`${import.meta.env.VITE_API_URL}department/single/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -31,7 +32,7 @@ function UpdateDepartment() {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem("token");
-      await axios.put(
+      await API.put(
         `${import.meta.env.VITE_API_URL}department/edit/${id}`,
         {
           name,

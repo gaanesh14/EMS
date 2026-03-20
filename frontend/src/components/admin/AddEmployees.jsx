@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { MdClose } from "react-icons/md";
@@ -22,7 +23,7 @@ function AddEmployees() {
 
   useEffect(() => {
     const fetchDepartments = async () => {
-      const { data } = await axios.get(
+      const { data } = await API.get(
         `${import.meta.env.VITE_API_URL}department/all`
       );
       setDepartments(data.department);
@@ -49,8 +50,8 @@ function AddEmployees() {
     try {
       const token = sessionStorage.getItem("token");
 
-      await axios.post(
-        "http://localhost:5000/api/employee/add",
+      await API.post(
+        `${import.meta.env.VITE_API_URL}employee/add`,
         {
           userName,
           email,

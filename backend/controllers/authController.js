@@ -54,19 +54,25 @@ export const loginUser = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    //const payload = { id: user._id, role: user.role };
-
-    const token = JWT.sign(
+    // Access Token (Short Life)
+    const accessToken = JWT.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
+      { expiresIn: "2m" },
     );
 
-    res.json({
+    // Refresh Token (Long Life)
+    const refreshToken = JWT.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d" },
+    );
+
+    return res.json({
       message: "Login Success",
-      token,
+      accessToken,
+      refreshToken,
+      // token,
       user: {
         id: user._id,
         userName: user.userName,
@@ -84,6 +90,36 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "internal Server error" });
     console.log("error", error);
+  }
+};
+
+export const logoutUser = (req, res) => {
+  return res.status(200).json({ message: "Logout successful" });
+};
+
+export const refreshToken = (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Refresh token required" });
+  }
+
+  try {
+    const decoded = JWT.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
+    const newAccessToken = JWT.sign(
+      { id: decoded.id, role: decoded.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "2m" },
+    );
+    res.json({
+      accessToken: newAccessToken,
+      // refreshToken: newRefreshToken
+    });
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid refresh token",
+    });
   }
 };
 
@@ -122,16 +158,25 @@ export const googleLogin = async (req, res) => {
       });
     }
 
-    const token = JWT.sign(
+    // Access Token (short life)
+    const accessToken = JWT.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "2m" },
+    );
+
+    // Refresh Token (long life)
+    const refreshToken = JWT.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d" },
     );
 
     //  RETURN FULL USER (same as local login)
     res.json({
       message: "Login Success",
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         userName: user.userName,
@@ -150,7 +195,6 @@ export const googleLogin = async (req, res) => {
     res.status(500).json({ message: "Google login failed" });
   }
 };
-
 
 // Password Change
 export const changePassword = async (req, res) => {
@@ -189,3 +233,4 @@ export const changePassword = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+

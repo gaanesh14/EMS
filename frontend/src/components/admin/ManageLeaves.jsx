@@ -14,11 +14,20 @@ function ManageLeaves() {
     page,
     setPage,
     totalPages,
+    loading
   } = usePayroll();
 
   useEffect(() => {
     fetchLeaves();
   }, [page, leaveSearch, statusFilter]);
+
+  loading && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-4 rounded shadow"> 
+        <p>Loading Leaves Data...</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="p-4 w-full min-h-screen bg-gray-100">

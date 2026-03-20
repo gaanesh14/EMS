@@ -1,5 +1,6 @@
 import React from "react";
 import { FaUsers, FaBuilding, FaMoneyCheckAlt } from "react-icons/fa";
+import API from "../../utils/api";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -21,8 +22,8 @@ export default function DashboardCards() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const token = sessionStorage.getItem("token");
-        const response = await axios.get(
+        const token = sessionStorage.getItem("accessToken");
+        const response = await API.get(
           `${import.meta.env.VITE_API_URL}department/count`,
           {
             headers: {
@@ -42,9 +43,9 @@ export default function DashboardCards() {
   }, []);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("accessToken");
 
-    axios
+    API 
       .get(`${import.meta.env.VITE_API_URL}leave/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       })

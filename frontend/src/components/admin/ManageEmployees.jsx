@@ -14,6 +14,7 @@ export default function ManageEmployees() {
         setEmpSearch,
         setPage,
         fetchEmployees,
+        loading,
         deleteEmployee} = useData();
 
     //  console.log("useData test:", useData);
@@ -28,7 +29,7 @@ export default function ManageEmployees() {
 };
   const startIndex = 0; // backend already paginated
 
-  // if (loading) return <div> Loading Employees...</div>
+  if (loading) return <div> Loading Employees...</div>
 
   return (
     <div className="p-4 w-full bg-gray-100 min-h-screen">

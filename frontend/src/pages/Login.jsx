@@ -23,20 +23,34 @@ function Login() {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}auth/login`,
-        { email, password }
+        // { withCredentials: true },
+        { email, password },
+        
       );
 
-      sessionStorage.setItem("token", res.data.token);
-      sessionStorage.setItem("role", res.data.user.role);
+      console.log("Server Response Data:", res.data);
+
+      if (res.data && res.data.user) {
+      // Use optional chaining (?.) to prevent setting "undefined"
+      if (res.data.accessToken) {
+        sessionStorage.setItem("accessToken", res.data.accessToken);
+      }
+      if (res.data.refreshToken) {
+        sessionStorage.setItem("refreshToken", res.data.refreshToken);
+      }
+      sessionStorage.setItem("role", res.data.user?.role || "");
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
-      sessionStorage.setItem("id", res.data.user.id);
-      sessionStorage.setItem("provider", res.data.user.authProvider);
       console.log("userdata:", res.data.user);
       toast.success("Login successful!");
       syncUser();
       navigate("/dashboard");
+      } else {
+        toast.error("Unexpected response from server");
+        console.error("Unexpected response structure:", res.data);
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
+      console.error("Login error:", error);
     }
   };
 
@@ -53,8 +67,13 @@ function Login() {
           image: user.photoURL,
         }
       );
-      sessionStorage.setItem("token", res.data.token);
-      sessionStorage.setItem("role", res.data.user.role);
+      if (res.data.accessToken) {
+        sessionStorage.setItem("accessToken", res.data.accessToken);
+      }
+      if (res.data.refreshToken) {
+        sessionStorage.setItem("refreshToken", res.data.refreshToken);
+      }
+      sessionStorage.setItem("role", res.data.user?.role || "");
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
       sessionStorage.setItem("id", res.data.user.id);
       sessionStorage.setItem("provider", res.data.user.authProvider);

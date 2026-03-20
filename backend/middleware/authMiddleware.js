@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 
-export const protect = async (req, res, next) => {
-  let authHeader = req.headers.authorization;
+export const protect = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Not Authorized, No Token" });
+    return res.status(401).json({ message: "No token provided" });
   }
 
   const token = authHeader.split(" ")[1];
@@ -13,7 +13,10 @@ export const protect = async (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(500).json({ message: "Invalid Token" });
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token Expired" });
+    }
+    return res.status(401).json({ message: "Invalid Token" });
   }
 };
 

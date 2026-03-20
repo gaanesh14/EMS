@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../../utils/api";
 import axios from "axios";
 import { usePayroll } from "../hooks/usePayroll";
 
@@ -14,6 +15,7 @@ function ManageSalary() {
     setSalary,
     page,
     setPage,
+    loading,
   } = usePayroll();
 
   useEffect(() => {
@@ -38,9 +40,9 @@ function ManageSalary() {
 
   // Update Status Handler
   const handleStatusChange = (id, newStatus) => {
-    const token = sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("accessToken");
 
-    axios
+    API
       .put(
         `${import.meta.env.VITE_API_URL}salary/salary-status/${id}`,
         { paymentStatus: newStatus },
@@ -56,6 +58,14 @@ function ManageSalary() {
       })
       .catch((err) => console.log(err));
   };
+
+  loading && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-4 rounded shadow">
+        <p>Loading Salary Data...</p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="p-4 w-full min-h-screen bg-gray-100">

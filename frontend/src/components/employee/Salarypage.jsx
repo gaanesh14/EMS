@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 
 function Salarypage() {
   const [salaries, setSalaries] = useState([]);
@@ -8,7 +9,7 @@ function Salarypage() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
 
-    axios
+     API
       .get(`${import.meta.env.VITE_API_URL}salary/mysalary`, {
         headers: { Authorization: `Bearer ${token}` },
       })

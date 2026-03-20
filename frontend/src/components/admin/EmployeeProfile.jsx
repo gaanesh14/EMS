@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { MdCloudUpload } from "react-icons/md";
@@ -25,7 +26,7 @@ export default function EmployeeProfile() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
 
-    axios
+    API
       .get(`${import.meta.env.VITE_API_URL}employee/single/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -57,7 +58,7 @@ export default function EmployeeProfile() {
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await axios.put(
+  const res = await API.put(
     `${import.meta.env.VITE_API_URL}upload/${employee._id}/upload`,
     formData
   );
@@ -70,7 +71,7 @@ export default function EmployeeProfile() {
 
   // Remove Image
   const removeImage = async () => {
-  await axios.put(
+  await API.put(
     `${import.meta.env.VITE_API_URL}upload/${employee._id}/remove`
   );
 

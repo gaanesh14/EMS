@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import API from "../../utils/api";
 import { Send, Cpu, User } from "lucide-react";
 
 const Chatbot = () => {
@@ -28,7 +29,7 @@ const Chatbot = () => {
     try {
       const token = sessionStorage.getItem("token");
       // Adjust the URL to your Express backend endpoint
-      const response = await axios.post(
+      const response = await API.post(
         `${import.meta.env.VITE_API_URL}employee/chat`,
         {
           message: userMessage,
