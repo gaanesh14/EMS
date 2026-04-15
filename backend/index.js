@@ -12,13 +12,13 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 dotenv.config();
 const app = express();
 
-// app.use(cors({
-//   origin: [
-//     "http://localhost:5173",
-//     "https://ems-frontend-5aq9.onrender.com"
-//   ],
-//   // credentials: true
-// }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://ems-frontend-5aq9.onrender.com"
+  ],
+  // credentials: true
+}));
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
