@@ -17,7 +17,7 @@ app.use(cors({
     "http://localhost:5173",
     "https://ems-frontend-5aq9.onrender.com"
   ],
-  // credentials: true
+  credentials: true
 }));
 // app.use(cors());
 app.use(express.json());
