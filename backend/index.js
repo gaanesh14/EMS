@@ -1,6 +1,6 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/connection.js";
 import authRouter from "./routes/authRoutes.js";
@@ -9,19 +9,17 @@ import departmentRoutes from "./routes/departmentRoutes.js";
 import leaveRoutes from "./routes/leaveRoutes.js";
 import salaryRoutes from "./routes/salaryRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-dotenv.config();
+
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://ems-frontend-5aq9.onrender.com"
-  ],
-  credentials: true
-}));
-// app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
+app.use(
+  cors({
+    origin: true, // Dynamically reflects the request origin, allowing all domains/IPs while supporting credentials
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  })
+);
 
 connectDB();
 

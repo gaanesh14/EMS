@@ -5,14 +5,19 @@ import Leave from "../models/leaveSchema.js";
 import Salary from "../models/salarySchema.js";
 import dotenv from "dotenv";
 
-dotenv.config();
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
 export const chatWithAI = async (req, res) => {
   try {
     const { message } = req.body;
+
+    if (!process.env.GROQ_API_KEY) {
+      return res.status(500).json({
+        reply: "AI service configuration error (missing API key).",
+      });
+    }
+
+    const groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    });
 
     const totalEmployees = await Employee.countDocuments();
     const totalDepartments = await Department.countDocuments();
